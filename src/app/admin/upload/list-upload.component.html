@@ -1,0 +1,16 @@
+<button class="button btn-info" *ngIf='showFile'
+	(click)='showFiles(false)'>Hide Images</button>
+
+<button class="button btn-info" *ngIf='!showFile'
+	(click)='showFiles(true)'>Show Images</button>
+
+<div [hidden]="!showFile">
+	<div class="panel panel-primary">
+		<div class="panel-heading">List of Images</div>
+		
+			<div class="panel-body">
+				<details-upload fileUpload='http://173.193.174.50:8080/files/19666_en_1.jpg'></details-upload>
+			</div>
+		
+	</div>
+</div>

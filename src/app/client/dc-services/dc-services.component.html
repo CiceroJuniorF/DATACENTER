@@ -1,0 +1,15 @@
+<div class="container areas">
+  <hr class="featurette-divider">
+  <!-- Example row of columns -->
+  <div class="row text-center ">
+    <div class="col-lg-3" *ngFor="let area of areas">
+      <a [routerLink]="['services',area.id]" [title]="area.name">
+          <img [src]="getMethod(area.name)" alt="IMG" class="imgArea">
+        <h2 class="mb-0 pb-2">{{area.name}}</h2>
+        <p class="text-center">{{area.partialDescription}}
+          </p>
+      </a>      
+    </div>   
+  </div>
+  <hr class="featurette-divider">
+</div>

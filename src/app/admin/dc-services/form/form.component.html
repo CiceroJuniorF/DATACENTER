@@ -1,0 +1,184 @@
+<div class="container areas" style="margin-top:10%;">
+  <div class="container row text-center">
+    <div class="col-lg-10">
+      <h2 class="text-left">{{title}}</h2>
+    </div>
+  </div>
+</div>
+<hr class="featurette-divider">
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <form [formGroup]="formName">
+      <div class="form-group" [class.has-error]="formName.controls['name'].touched && !formName.controls['name'].valid">
+        <label>Nome:</label>
+        <input type="text" class="form-control" [(ngModel)]="serviceModel.name" maxlength="30" formControlName="name">
+        <p style="color:red" *ngIf="formName.controls['name'].touched && !formName.controls['name'].valid">O campo é obrigatório!</p>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="form-group">
+          <label>Status:</label>
+          <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="serviceModel.status" style="width: 100%;" tabindex="-1"
+            aria-hidden="true">
+            <option selected="selected" value="2">
+              <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Ativado</font>
+              </font>
+            </option>
+            <option value="1">
+              <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Desativado</font>
+              </font>
+            </option>
+            <option value="0">
+              <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Excluido</font>
+              </font>
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="form-group">
+          <label>Tipo Cobrança:</label>
+          <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" [(ngModel)]="serviceModel.chargingType"
+            aria-hidden="true">
+            <option value="1">
+              <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Única</font>
+              </font>
+            </option>
+            <option value="2">
+              <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Mensal</font>
+              </font>
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="form-group">
+          <label>Imagem:</label>
+          <label style="color:red;">Obs*:Imagens no formato .png</label>
+          <form-upload></form-upload>         
+          <button class="btn btn-link" data-toggle="modal" data-target="#modalImage"> Vizualizar Imagem Atual </button>
+          <div class="modal" id="modalImage" tabindex="-1" role="dialog" aria-labelledby="modalImage" aria-hidden="false">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalImageTitle">Image Service</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <details-upload [fileUpload]='urlImage'></details-upload>
+                    </div>
+                    <div class="col-md-2"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="form-group">
+          <label>Linguagem:</label>
+          <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="serviceModel.language" style="width: 100%;" tabindex="-1"
+            aria-hidden="true">
+            <option selected="selected" *ngFor="let l of linguas" [value]="l.id">
+              <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">{{l.name}}</font>
+              </font>
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Área:</label>
+      <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="serviceModel.area" style="width: 100%;" tabindex="-1"
+        aria-hidden="true">
+        <option *ngFor="let area of listArea" [value]="area.id">
+          <font style="vertical-align: inherit;">
+            <font style="vertical-align: inherit;">{{area.name}}</font>
+          </font>
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>
+        <font style="vertical-align: inherit;">
+          <font style="vertical-align: inherit;">Descrição:</font>
+        </font>
+      </label>
+      <textarea class="form-control" rows="3" [(ngModel)]="serviceModel.description" placeholder="Enter ..."></textarea>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>
+
+<!--{{serviceModel | json}}-->
+
+<div class="col-md-12 ">
+
+  <div class="nav-tabs-custom tabs tab-0">
+    <ul class="nav nav-tabs">
+      <li style="padding:20px;" (click)="openTab('field')" [class.active]="isFields">
+        <a (click)="openTab('field')" data-toggle="tab" aria-expanded="true">
+          <font style="vertical-align: inherit;">
+            <font style="vertical-align: inherit;">Fields</font>
+          </font>
+        </a>
+      </li>
+      <li style="padding:20px;" (click)="openTab('si')" [class.active]="isServiceIten">
+        <a (click)="openTab('si')" data-toggle="tab" aria-expanded="false">
+          <font style="vertical-align: inherit;">
+            <font style="vertical-align: inherit;">Service Itens</font>
+          </font>
+        </a>
+      </li>
+      <li style="padding:20px;" (click)="openTab('dc')" [class.active]="isDataCenter">
+        <a (click)="openTab('dc')" data-toggle="tab" aria-expanded="false">
+          <font style="vertical-align: inherit;">
+            <font style="vertical-align: inherit;">Data Centers</font>
+          </font>
+        </a>
+      </li>
+      <li style="padding:20px;" (click)="openTab('group')" [class.active]="isGroup">
+        <a (click)="openTab('group')" data-toggle="tab" aria-expanded="false">
+          <font style="vertical-align: inherit;">
+            <font style="vertical-align: inherit;">Grupos</font>
+          </font>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div [class.active]="isFields" class="tab-pane">
+        <app-dc-field (alterList)='fieldList($event)'></app-dc-field>
+      </div>
+      <div [class.active]="isServiceIten" class="tab-pane">
+        <app-dc-service-iten (alterList)='serviceList($event)'></app-dc-service-iten>
+      </div>
+      <div [class.active]="isDataCenter" class="tab-pane">
+        <app-dc-datacenter (alterList)='dataCenterList($event)'></app-dc-datacenter>
+      </div>
+      <div [class.active]="isGroup" class="tab-pane">
+        <app-dc-group (alterList)='groupList($event)'></app-dc-group>
+      </div>
+      <!-- /.tab-content -->
+    </div>
+    <!-- nav-tabs-custom -->
+  </div>
+</div>
+<button (click)="save()" style="width:100%" class="btn btn-primary">Save</button>
+<!-- {{serviceModel | json}} -->

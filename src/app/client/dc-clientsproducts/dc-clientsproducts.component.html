@@ -1,0 +1,86 @@
+<div class="container areas">
+  <hr class="featurette-divider">
+  <div class="container row text-center">
+    <div class="col-lg-10">
+      <h2 class="text-left">{{area.name}}</h2>
+      <br>
+      <p class="text-left desc-area">{{area.fullDescription}}</p>
+
+    </div>
+  </div>
+</div>
+
+<div class="container areas">
+  <hr class="featurette-divider">
+  <!-- Example row of columns -->
+  <div style=" width:100%;
+                height:450px;
+                overflow:auto;">
+  <table class="table table-striped ">
+    <thead >
+      <tr class="thead">
+        <th>Data Center</th>
+        <th>Service Name</th>
+        <th>Registry Date</th>
+        <th>Approval Date</th>
+        <th>Status</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let service of servicesClient">
+        <td>{{service.dataCenterName}}</td>
+        <td>{{service.serviceName}}</td>
+        <td>{{service.registryDate | date:'dd/MM/yyyy'}}</td>
+        <td>{{service.approvalDate | date:'dd/MM/yyyy'}}</td>
+        <td>{{service.status}}</td>
+        <td>{{service.price | currency:'BRL':true:'1.2-2'}}</td>
+        <td>
+          <a data-toggle="modal" data-target="#exampleModalLong" (click)="loadClientProduct(service)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <hr class="featurette-divider">
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{{serviceClient.serviceName}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-left">
+          <b>Data Center: </b> {{serviceClient.dataCenterName}}</p>     
+        <p class="text-left">
+          <b>Registry Date: </b>{{serviceClient.registryDate | date:'dd/MM/yyyy'}}</p>
+        <p class="text-left">
+          <b>Approval Date: </b>{{serviceClient.approvalDate | date:'dd/MM/yyyy'}}</p>
+        <p class="text-left">
+          <b>Status: </b>{{serviceClient.status}}</p>
+        <p class="text-left">
+          <b>Price: </b> {{serviceClient.price | currency:'BRL':true:'1.2-2'}}</p>
+        <div *ngFor="let field of productService.field">
+            <p class="text-left">
+                <b>{{field.fieldDescription}}: </b> <span style="text-indent:5px;	width:250px;">{{field.value}}</span></p>
+        </div>
+        <div *ngFor="let service of productService.service"> <p class="text-left">
+            <b>{{service.typeName}}: </b> {{service.labelForDescription}} ({{service.price | currency:'BRL':true:'1.2-2'}})</p></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
