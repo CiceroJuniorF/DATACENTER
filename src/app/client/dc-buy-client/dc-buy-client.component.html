@@ -76,7 +76,7 @@
                   </p>
                   <div *ngFor="let item of getFieldValues(field.id)" class="checkbox">
                       <label>
-                        <input type="checkbox"  value="item">{{item}}</label>
+                        <input type="checkbox" [checked]="field.fieldValueDefault === item" [id]="field.id" [name]="field.id" (click)="addFieldChecked(field.id,item)" [value]="item">{{item}}</label>
                     </div>
               </div>
 
@@ -148,10 +148,17 @@
                   <tr *ngIf="!field.children">
                     <th colspan="3" style="text-align: center;">{{field.name}}</th>
                   </tr>
-                  <tr *ngIf="field.fieldType != 4">
+                  <tr *ngIf="field.fieldType != 4 && field.fieldType != 2 ">
                     <td colspan="2">{{field.value}}</td>
                     <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
                   </tr>
+                  <ng-container *ngIf="field.fieldType == 2">
+                    <tr *ngFor="let checked of getFieldChecked(field.id)">
+                        <td colspan="2">{{checked}}</td>
+                        <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
+                    </tr>
+                  </ng-container>
+                  
                   <ng-container *ngIf="field.fieldType == 4 && !field.children">
                     <tr>
                       <td colspan="2">{{field.value}}</td>

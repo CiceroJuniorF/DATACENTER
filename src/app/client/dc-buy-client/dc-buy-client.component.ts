@@ -85,6 +85,7 @@ export class DcBuyClientComponent implements OnInit {
     this.fields = data;
     var _fieldAditional;
     var _fieldRadio;
+    var _fieldChecked;
     this.fields.forEach(element => {
       if (element.fieldType == 4) {
         _fieldAditional = new FieldAditional();
@@ -92,15 +93,25 @@ export class DcBuyClientComponent implements OnInit {
         _fieldAditional.fields = [];
         this.fieldAdditional.push(_fieldAditional);
       }
-      if(element.fieldType == 1 || element.fieldType == 2){
+      if (element.fieldType == 1 || element.fieldType == 2) {
         _fieldRadio = new FieldRadio();
         _fieldRadio.id = element.id;
         _fieldRadio.values = element.fieldValues.split("|");
-        if((element.fieldValueDefault !== null || element.fieldValueDefault !== undefined) 
-        && _fieldRadio.values.find(value => value === element.fieldValueDefault)){
-          this.addField(element.fieldValueDefault,element);
+        if ((element.fieldValueDefault !== null || element.fieldValueDefault !== undefined)
+          && _fieldRadio.values.find(value => value === element.fieldValueDefault)) {
+          this.addField(element.fieldValueDefault, element);
         }
-        this.fieldRadio.push(_fieldRadio);   
+        if (element.fieldType == 2) {
+          _fieldChecked = new FieldRadio();
+          _fieldChecked.id = _fieldRadio.id;
+          _fieldChecked.values = [];
+
+          if (_fieldRadio.values.find(data => data === element.fieldValueDefault)) {
+            _fieldChecked.values.push(element.fieldValueDefault);
+          }
+          this.fieldCheckSelected.push(_fieldChecked);
+        }
+        this.fieldRadio.push(_fieldRadio);
       }
     });
     this.fields.forEach(element => {
@@ -218,13 +229,13 @@ export class DcBuyClientComponent implements OnInit {
       if (this.summary.datacenter.id == null && this.datacenters != null) {
         this.alert.error("Select one DataCenter!");
       }
-      if (this.summary.fields.length < this.fields.length) {
-        this.fields.forEach(element => {
-          if (element.value === '' || element.value == null) {
-            this.alert.error("Fill in " + element.name);
-          }
-        });
-      }
+
+      this.fields.forEach(element => {
+        if (element.value === '' || element.value == null) {
+          this.alert.error("Fill in " + element.name);
+        }
+      });
+
       if (this.summary.serviceItem.length < this.typesItem.length) {
         this.serviceItems.forEach(element1 => {
           if (!this.summary.serviceItem.find(iten => iten.typeName == element1.typeName) && element1.typeName != name) {
@@ -299,12 +310,33 @@ export class DcBuyClientComponent implements OnInit {
     }
     return false;
   }
-  cont = 0;
+
+  addFieldChecked(id, value) {
+
+    if (this.getFieldChecked(id).find(element => element === value)) {
+      this.getFieldChecked(id).splice(this.getFieldChecked(id).indexOf(value), 1);
+    } else {
+      this.getFieldChecked(id).push(value);
+    }
+    var field = this.summary.fields.find(element => element.id == id);
+    field.value = '';
+    if (this.getFieldChecked(id).length > 0) {
+      this.getFieldChecked(id).forEach(value => {
+        field.value += value;
+        field.value += '|';
+      });
+      field.value = field.value.substr(0, (field.value.length - 1));
+    }
+
+  }
+
+  getFieldChecked(id) {
+    return this.fieldCheckSelected.find(element => element.id = id).values;
+  }
+
   delField(field) {
-    this.cont++;
     if (field.children) {
       this.summary.fields.splice(this.summary.fields.indexOf(field), 1);
-
 
       this.getFieldChildren(field.id).splice(this.getFieldChildren(field.id).indexOf(field), 1);
     }
