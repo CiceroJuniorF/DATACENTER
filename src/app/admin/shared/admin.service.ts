@@ -168,4 +168,21 @@ export class AdminService {
   getUrlImage(name){
     return this.service.getUrl()+'files/'+name+'.png'
   }
+
+  getDataCenter(name) {
+    this.loading.showLoading(true);
+    if (name === '') {
+      name = 'vazio';
+    }
+    return this.http.get(this.service.getUrl() + "admin/datacenter"+ "/get/" + name)
+      .map(res => res.json());
+  }
+
+  saveDataCenter(datacenter) {
+    this.loading.showLoading(true);
+    return this.http.post(this.service.getUrl() + "admin/datacenter" + "/save-datacenter", JSON.stringify(datacenter), this.service.getHeader())
+      .map(res => res.json());
+  }
+
+
 }

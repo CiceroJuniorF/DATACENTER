@@ -11,6 +11,7 @@ import { DcDatacenterComponent } from 'app/admin/dc-services/dc-datacenter/dc-da
 import { AdminClientComponent } from './dc-client/dc-client.component';
 import { AdminClientListComponent } from './dc-client/list/list.component';
 import { AdminClientFormComponent } from './dc-client/form/form.component';
+import { DcDactacenterComponent } from './dc-dactacenter/dc-dactacenter.component';
 
 
 const GESTAO: Routes = [
@@ -34,7 +35,8 @@ const GESTAO: Routes = [
         },
         {
           path: 'form/:idCLient', component: AdminClientFormComponent
-        }]}
+        }]},
+        { path: 'datacenter', component: DcDactacenterComponent}
     ],
     canActivate: [AuthAdminGuard]
   }
