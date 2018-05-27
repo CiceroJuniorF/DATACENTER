@@ -1,0 +1,122 @@
+<div class="container areas">
+  <hr class="featurette-divider">
+  <div class="container areas" style="margin-top:10%;">
+    <div class="container row text-center">
+      <div class="col-lg-10">
+        <h2 class="text-left">Cliente Service</h2>
+      </div>
+    </div>
+  </div>
+  <hr class="featurette-divider">
+  <div class="col-md-12">
+    <div class="form-group">
+      <div class="col-md-12">
+        <label>Cliente:</label>
+        <input style="width:100%;" [(ngModel)]="nameClient" type="text" class="form-control" placeholder="Search...">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <label>Service:</label>
+        <input style="width:100%;" [(ngModel)]="nameService" type="text" class="form-control" placeholder="Search...">
+      </div>
+    </div>
+    <div class="form-inline">
+      <div class="col-md-4">
+        <label class="checkbox-inline">
+          <input type="radio" name="status" [value]="1" [(ngModel)]="status" /> Aguardando Aprovação Contratação
+        </label>
+      </div>
+      <div class="col-md-4">
+        <label class="checkbox-inline">
+          <input type="radio" name="status" [value]="2" [(ngModel)]="status" /> Aguardando Aprovação Cancelamento
+        </label>
+      </div>
+      <div class="col-md-2">
+        <label class="checkbox-inline">
+          <input type="radio" name="status" [value]="3" [(ngModel)]="status" /> Hitórico Completo
+        </label>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-primary" (click)="onSearch()">Pesquisar</button>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div style=" width:100%;
+                  height:450px;
+                  overflow:auto;">
+    <table class="table table-striped ">
+      <thead>
+        <tr class="thead">
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Situação</th>
+          <th>Documento</th>
+          <th>Área</th>
+          <th>Serviço</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="isEmpty()">
+        <tr *ngFor="let cs of clientServices">
+          <td>{{cs.idServiceClient}}</td>
+          <td>{{cs.clientName}}</td>
+          <td>{{cs.situation}}</td>
+          <td>{{cs.document}}</td>
+          <td>{{cs.areaName}}</td>
+          <td>{{cs.serviceName}}</td>
+          <td>
+            <a (click)="load(cs)" data-toggle="modal" data-target="#modalDC">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEmpty()">
+        <tr>
+          <td colspan="5">A busca não retornou resultados</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr class="featurette-divider">
+</div>
+
+<div class="modal modalDC" id="modalDC" tabindex="-1" role="dialog" aria-labelledby="modalDC" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDCTitle">Aprove</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <p class="text-left">
+              <b>ID: </b> {{clientService.idServiceClient}}</p>
+            <p class="text-left">
+              <b>Nome: </b> {{clientService.clientName}}</p>
+            <p class="text-left">
+              <b>Situação: </b> {{clientService.situation}}</p>
+            <p class="text-left">
+              <b>Documento: </b> {{clientService.document}}</p>
+            <p class="text-left">
+              <b>Área: </b> {{clientService.areaName}}</p>
+            <p class="text-left">
+              <b>Service: </b> {{clientService.serviceName}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+       
+            <button type="button" style="width: 100%"class="btn btn-success" (click)="accept()" data-dismiss="modal">Aceitar</button>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>

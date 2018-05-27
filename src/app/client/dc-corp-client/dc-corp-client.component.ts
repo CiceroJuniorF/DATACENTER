@@ -25,7 +25,7 @@ export class DcCorpClientComponent implements OnInit {
       .subscribe(data => {this.products = data;this.loading.showLoading(false);}, error => this.erro())
   }
   erro() {
-    this.alert.error('Ocorreu um erro por favor contate uma administrador');
+    this.alert.error('There was an error loading data please contact an administrator!');
     this.router.navigate(['/internal-error']);
     this.visible = false;
     this.loading.showLoading(false);

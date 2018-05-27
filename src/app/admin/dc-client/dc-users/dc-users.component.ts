@@ -88,9 +88,9 @@ export class DcUsersComponent implements OnInit {
     if (iten.id === null) {
       this.users.splice(this.users.indexOf(iten), 1);
     } else {
-      this.service.deleteUserInfo(iten.id).subscribe(data => { this.loading.showLoading(false); this.alert.success("Deletado!") },
-        error => { this.loading.showLoading(false); this.alert.error("Erro!") });
-      this.ngOnInit();
+      this.service.deleteUserInfo(iten.id).subscribe(data => { this.loading.showLoading(false); this.alert.success("Deletado!");this.ngOnInit(); },
+        error => { this.loading.showLoading(false); this.alert.error("Erro!");this.ngOnInit() });
+        
     }
   }
 

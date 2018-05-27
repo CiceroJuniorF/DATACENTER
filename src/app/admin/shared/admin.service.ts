@@ -112,6 +112,11 @@ export class AdminService {
     return this.http.get(this.service.getUrl() + this.urlClient + "/clients/" + name + "/" + status)
       .map(res => res.json());
   }
+  deleteClient(idClient) {
+    this.loading.showLoading(true);
+    return this.http.delete(this.service.getUrl() + this.urlClient + "/delete-client/" + idClient)
+      .map(res => res.json());
+  }
 
   deleteUserInfo(idService) {
     this.loading.showLoading(true);
@@ -184,5 +189,22 @@ export class AdminService {
       .map(res => res.json());
   }
 
+  searchClientService(clientName,serviceName,option) {
+    this.loading.showLoading(true);
+    if (clientName === '') {
+      clientName = 'vazio';
+    }
+    if (serviceName === '') {
+      serviceName = 'vazio';
+    }
+    return this.http.get(this.service.getUrl() + "admin/client-service"+ "/search/" + clientName+"/"+serviceName+"/"+option)
+      .map(res => res.json());
+  }
+
+  approveClientService(clientid,action) {
+    this.loading.showLoading(true);
+    return this.http.get(this.service.getUrl() + "admin/client-service"+ "/aprove/" + clientid+"/"+this.service.getUser().userIfoId+"/"+action)
+      .map(res => res.json());
+  }
 
 }

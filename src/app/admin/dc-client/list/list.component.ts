@@ -39,7 +39,7 @@ export class AdminClientListComponent implements OnInit {
   }
 
   delete(id) {
-    //this.service.deleteService(id).subscribe(data => alert(data.message));
+    this.service.deleteClient(id).subscribe(data => {this.loading.showLoading(false);this.alert.info(data.message);this.ngOnInit()});
   }
 
 

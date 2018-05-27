@@ -57,7 +57,7 @@ export class DcClientsproductsComponent implements OnInit {
   loadClientProduct(service){
     this.serviceClient = service;
     this.service.getProductService(this.serviceClient.idClientService)
-    .subscribe(productService => this.alterService(productService));
+    .subscribe(productService => this.alterService(productService), error => this.erro());
   }
 
   alterService(productService){
@@ -70,7 +70,7 @@ export class DcClientsproductsComponent implements OnInit {
   }
 
   erro() {
-    this.alert.error('Ocorreu um erro ao carregar os dados por favor contate um administrador!');
+    this.alert.error('There was an error loading data please contact an administrator!');
     this.loading.showLoading(false);
   }
 

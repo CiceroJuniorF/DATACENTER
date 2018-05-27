@@ -21,7 +21,7 @@ export class AlertComponent {
             if(this.alerts.length > 0){
                 this.removeAlert(this.alerts[0]);
             }
-        }, 6000);
+        }, 7000);
     }
 
     ngOnInit() {

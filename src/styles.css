@@ -3113,15 +3113,15 @@ i.fa {
 }
 
 .navbar{
-    height: 15% !important;
+    height: 10% !important;
 }
 .navbar-expand-md .navbar-nav .nav-link {
     position: relative;
     color: #eeeeee;
     padding-right: 1rem;
     padding-left: 1rem;
-    padding-bottom: 1.5rem;
-    padding-top: 1.5rem;
+    padding-bottom: 1.3rem;
+    padding-top: 1.3rem;
     border: 0px;
     background-color: #3c8dbc;
     width: 140px;

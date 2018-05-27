@@ -26,6 +26,7 @@ import { FieldTypePipe } from '../pipes/field-type.pipe';
 import { FormUploadComponent } from './upload/form-upload.component';
 import { DetailsUploadComponent } from './upload/details-upload.component';
 import { DcDactacenterComponent } from './dc-dactacenter/dc-dactacenter.component';
+import { DcClientServiceComponent } from './dc-client-service/dc-client-service.component';
 
 
 
@@ -64,7 +65,8 @@ import { DcDactacenterComponent } from './dc-dactacenter/dc-dactacenter.componen
     FieldTypePipe,
     FormUploadComponent,
     DetailsUploadComponent,
-    DcDactacenterComponent 
+    DcDactacenterComponent,
+    DcClientServiceComponent 
   ]
 })
 export class AdminModule { }

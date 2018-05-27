@@ -174,11 +174,11 @@ export class DcBuyClientComponent implements OnInit {
   ok() {
     this.loading.showLoading(false);
     this.router.navigate(['/cliente']);
-    this.alert.success("Order Received!");
+    this.alert.info("Order Received!");
   }
   erro() {
     this.loading.showLoading(false);
-    this.alert.error('Ocorreu um erro ao carregar os dados!')
+    this.alert.error('There was an error loading the data!')
   }
 
   ngOnDestroy() {
@@ -227,12 +227,12 @@ export class DcBuyClientComponent implements OnInit {
     if (this.summary.fields.length < this.fields.length || this.summary.serviceItem.length < this.typesItem.length || this.summary.datacenter.id == null && this.datacenters != null) {
       var name = "";
       if (this.summary.datacenter.id == null && this.datacenters != null) {
-        this.alert.error("Select one DataCenter!");
+        this.alert.warn("Select one DataCenter!");
       }
 
       this.fields.forEach(element => {
         if (element.value === '' || element.value == null) {
-          this.alert.error("Fill in " + element.name);
+          this.alert.warn("Fill in " + element.name);
         }
       });
 
@@ -240,7 +240,7 @@ export class DcBuyClientComponent implements OnInit {
         this.serviceItems.forEach(element1 => {
           if (!this.summary.serviceItem.find(iten => iten.typeName == element1.typeName) && element1.typeName != name) {
             name = element1.typeName;
-            this.alert.error("Select One " + element1.typeName);
+            this.alert.warn("Select One " + element1.typeName);
           }
         });
       }
