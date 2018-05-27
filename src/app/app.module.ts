@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 
@@ -22,13 +22,14 @@ import { LoadingComponent } from './loading/loading.component';
 import { LoadingService } from './loading/loading.service';
 import { UploadFileService } from './admin/upload/upload-file.service';
 import { HttpService } from './http.service';
+import { SettingsService } from './shared/settings.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NotfoundComponent,
-    InternalerrorComponent,AlertComponent, LoadingComponent
+    InternalerrorComponent, AlertComponent, LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -36,13 +37,27 @@ import { HttpService } from './http.service';
     HttpModule,
     ClientModule,
     ReactiveFormsModule,
-    routing,AdminModule,
-    NotificationsModule 
+    routing, AdminModule,
+    NotificationsModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  providers: [{ provide: Http, useClass: HttpService },AppService, AuthGuard, UploadFileService, LoginAuth,  AuthAdminGuard,NotificationsService,  AlertService,LoadingService],
+  providers: [{ provide: Http, useClass: HttpService },
+    SettingsService,
+    {
+      provide: LOCALE_ID,
+      deps:[SettingsService],
+      useFactory:(settings) => settings.getLocale()
+    },
+    AppService, 
+    AuthGuard, 
+    UploadFileService, 
+    LoginAuth, 
+    AuthAdminGuard, 
+    NotificationsService, 
+    AlertService, 
+    LoadingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
