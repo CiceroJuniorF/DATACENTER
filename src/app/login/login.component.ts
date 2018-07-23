@@ -10,6 +10,7 @@ import { AppService } from 'app/shared/app.service';
 import { User } from 'app/shared/model/user';
 import { ok } from 'assert';
 import { Response } from '@angular/http';
+import { LoadingService } from '../loading/loading.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
   user: User = new User();
   message: string = '';
   constructor(formBuilder: FormBuilder, private service: AppService, private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute, private loading : LoadingService) {
     this.form = formBuilder.group({
       email: [''],
       password: ['']
@@ -32,34 +33,33 @@ export class LoginComponent implements OnInit {
   }
 
   save() {
-    var result,
-      userLogin = this.form.value;
-    result = this.service.login(userLogin);
-    result.subscribe(userDTO => (this.onLogin(userDTO)), error => this.onErrorLogin());
+    this.onLogin();
   }
+    
 
-  onLogin(user: User) {
-    this.user = user;
-
-    this.service.gerarToken({ "email": "application", "password": "46c825f63334a04c8316ee69a8b49a68" }).subscribe(
+  onLogin() {
+    this.loading.showLoading(true);
+    this.service.gerarToken({ "email": this.login.email, "password": this.login.password}).subscribe(
       (res) => {
         var token = res.headers.get('authorization');
         if (token) {
           window.sessionStorage.setItem('token', token);
-          this.service.setUser(user);
-          if (user.administrator === 1) {
-            this.router.navigate(['admin', 'services']);
-          } else {
-            this.router.navigate(['cliente']);
-          }
+          this.service.login(this.form.value).subscribe(user =>{
+            this.service.setUser(user);
+            if (user.administrator === 1) {
+              this.router.navigate(['admin', 'services']);
+            } else {
+              this.router.navigate(['cliente']);
+            }
+          }, error =>{} );
+
         }
-        error => {
-          console.log("ERRROOOOORRR===>>>" + error);
-        }
+        
+      },(err)=>{
+        this.onErrorLogin();
       }
     );
-
-
+    this.loading.showLoading(false);
 
   }
 

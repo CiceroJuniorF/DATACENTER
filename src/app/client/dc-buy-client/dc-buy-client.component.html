@@ -12,19 +12,19 @@
           <!--DataCenters-->
           <div class="box-body" style="padding-left:30px; ">
             <div *ngFor="let field of fields; let i = index">
-
               <div *ngIf="field.fieldType === 0" class="form-group">
                 <label *ngIf="field.required == 1">*</label>
-                <label>{{field.name}}: </label>
+                <label class="b-d-black" title="{{field.hint}}">{{field.name}}:</label>  <span *ngIf="field.isUsedForPrice == 1">({{field.price | currency:'BRL':true:'1.2-2'}} )</span>
+                
                 <input class="form-control" [placeholder]="field.fieldDescription" type="text" maxlength="30" required="true" [value]="field.fieldValueDefault"
                   (blur)=" addField(inputValue.value,field)" #inputValue>
-                <span *ngIf="field.isUsedForPrice == 1">({{field.price | currency:'BRL':true:'1.2-2'}} )</span>
+                
               </div>
               <div *ngIf="field.fieldType === 4" class="form-group">
                 <div *ngIf="!field.children">
                   <div>
-                    <label>
-                      <span *ngIf="field.required == 1">*</span>{{field.name}}: </label>
+                    <label class="b-d-black" title="{{field.hint}}">
+                      <span *ngIf="field.required == 1">*</span>{{field.name}}: </label> <span *ngIf="field.isUsedForPrice == 1 && !field.children">({{field.price | currency:'BRL':true:'1.2-2'}} )</span>
                     <a (click)="setField(field)">
                       <i class="fa fa-plus-square-o fa-1x" aria-hidden="true"></i>
                     </a>
@@ -33,13 +33,12 @@
                     <input style="width: 100%;" class="form-control" [placeholder]="field.fieldDescription" type="text" maxlength="30" required="true"
                       [value]="field.fieldValueDefault" (blur)="addField(inputValue.value,field)" #inputValue>
                   </div>
-                </div>
-                <span *ngIf="field.isUsedForPrice == 1 && !field.children">({{field.price | currency:'BRL':true:'1.2-2'}} )</span>
+                </div>                
                 <div *ngIf="field.isUsedForPrice == 0 && !field.children" style="height: 10px"></div>
                 <div *ngFor="let children of getFieldChildren(field.id)">
                   <div class="form-group form-inline">
                     <div class="col-md-1">
-                      <label>
+                      <label class="b-d-black" title="{{field.hint}}">
                         <span *ngIf="children.required == 1">*</span>{{children.name}}: </label>
                     </div>
                     <div class="col-md-10">
@@ -57,8 +56,8 @@
               <div *ngIf="field.fieldType === 1">
                 <!--SubServices-->
                 <form>
-                  <p class="text-center">
-                    <label>
+                  <p class="text-left">
+                    <label class="b-d-black" title="{{field.hint}}">
                       <span *ngIf="field.required == 1">*</span>{{field.name}}:</label>
                   </p>
                   <div *ngFor="let  item of  getFieldValues(field.id)" class="radio">
@@ -70,38 +69,40 @@
                 </form>
               </div>
               <div *ngIf="field.fieldType === 2">
-                  <p class="text-center">
-                      <label>
+                  <p class="text-left">
+                      <label class="b-d-black" title="{{field.hint}}">
                         <span *ngIf="field.required == 1">*</span>{{field.name}}:</label>
                   </p>
                   <div *ngFor="let item of getFieldValues(field.id)" class="checkbox">
-                      <label>
+                      <label class="input-pon">
                         <input type="checkbox" [checked]="field.fieldValueDefault === item" [id]="field.id" [name]="field.id" (click)="addFieldChecked(field.id,item)" [value]="item">{{item}}</label>
                     </div>
               </div>
 
             </div>
+            <div *ngIf="datacenters.length > 0 ">
             <form>
-              <p class="text-center">
-                <b>*Data Centers</b>
+              <p class="text-left">
+                <label class="b-d-black">*Data Centers</label>
               </p>
               <div *ngFor="let datacenter of datacenters" class="radio">
                 <span class="input-group-addon">
                   <input type="radio" [id]="datacenter.name" name="datacenter" [value]="datacenter.name" (click)="datacenterSelect(datacenter)">
-                  <label class="text-center" [for]="datacenter.name">{{datacenter.name}}</label>
+                  <label class="text-left input-pon" [for]="datacenter.name">{{datacenter.name}}</label>
                 </span>
               </div>
             </form>
+            </div>
             <!--SubServices-->
             <div *ngFor="let type of typesItem">
               <form>
-                <p class="text-center">
-                  <b>{{type.required}}{{type.name}}</b>
+                <p class="text-left">
+                  <label class="b-d-black">{{type.required}}{{type.name}}</label>
                 </p>
                 <div *ngFor="let  item of serviceItems" class="radio">
                   <span class="input-group-addon" *ngIf="item.typeName == type.name">
                     <input type="radio" [id]="item.name" [name]="type.name" [value]="item.name" (click)="serverItensSelect(item)">
-                    <label class="text-left" [for]="item.name">{{item.name}} ({{item.price | currency:'BRL':true:'1.2-2'}})</label>
+                    <label class="text-left input-pon" [for]="item.name"  title="{{item.description}}">{{item.name}} ({{item.price | currency:'BRL':true:'1.2-2'}})</label>
                   </span>
                 </div>
 
@@ -109,11 +110,7 @@
             </div>
             <!--Fields-->
             <div class="chart">
-
-
-
               <canvas id="areaChart" style="height: 212px; width: 534px;" width="534" height="212"></canvas>
-
             </div>
           </div>
           <!-- /.box-body -->
@@ -143,16 +140,18 @@
                   <td></td>
                   <td>{{summary.datacenter.name}}</td>
                 </tr>
-
                 <tbody *ngFor="let field of summary.fields; let i = index">
-                  <tr *ngIf="!field.children">
+                  <tr *ngIf="!field.children && field.value !== '' && field.fieldType != 4">
                     <th colspan="3" style="text-align: center;">{{field.name}}</th>
                   </tr>
-                  <tr *ngIf="field.fieldType != 4 && field.fieldType != 2 ">
+                  <tr *ngIf="!field.children && field.fieldType == 4">
+                      <th colspan="3" style="text-align: center;">{{field.name}}</th>
+                    </tr>
+                  <tr *ngIf="field.fieldType != 4 && field.fieldType != 2 && field.value !== '' ">
                     <td colspan="2">{{field.value}}</td>
                     <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
                   </tr>
-                  <ng-container *ngIf="field.fieldType == 2">
+                  <ng-container *ngIf="field.fieldType == 2 && field.value !== ''">
                     <tr *ngFor="let checked of getFieldChecked(field.id)">
                         <td colspan="2">{{checked}}</td>
                         <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
@@ -160,14 +159,16 @@
                   </ng-container>
                   
                   <ng-container *ngIf="field.fieldType == 4 && !field.children">
-                    <tr>
+                    <tr *ngIf="field.value !== ''">
                       <td colspan="2">{{field.value}}</td>
                       <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
                     </tr>
-                    <tr *ngFor="let children of getFieldChildren(field.id)">
-                      <td colspan="2">{{children.value}}</td>
-                      <td>{{children.price | currency:'BRL':true:'1.2-2'}}</td>
-                    </tr>
+                    <ng-container  *ngFor="let children of getFieldChildren(field.id)">
+                      <tr *ngIf="children.value !== ''">
+                        <td colspan="2">{{children.value}}</td>
+                        <td>{{children.price | currency:'BRL':true:'1.2-2'}}</td>
+                      </tr>
+                    </ng-container>
                   </ng-container>
 
                 </tbody>
@@ -188,7 +189,7 @@
                 <p class="text-right">
                   <button (click)="placeOrder()" class="btn btn-primary"> Place Order</button>
                 </p>
-                <p class="text-center" [style.color]="requiredVisible? 'red' : 'black'">
+                <p class="text-left" [style.color]="requiredVisible? 'red' : 'black'">
                   {{required}}
                 </p>
               </div>

@@ -11,7 +11,7 @@
   <div class="col-md-12">
     <div class="form-inline">
       <div class="col-md-10">
-        <input style="width:100%;" [(ngModel)]="name" type="text" class="form-control" placeholder="Search...">
+        <input style="width:100%;" [(ngModel)]="name" (keyup.enter)="onSearch()" type="text" class="form-control" placeholder="Search...">
       </div>
 
       <div class="col-md-2">

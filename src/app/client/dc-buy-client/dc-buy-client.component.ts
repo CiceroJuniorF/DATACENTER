@@ -81,6 +81,10 @@ export class DcBuyClientComponent implements OnInit {
 
   }
 
+  ngAfterContentChecked() {
+    this.summaryTotal();
+  }
+
   getFields(data) {
     this.fields = data;
     var _fieldAditional;
@@ -148,12 +152,13 @@ export class DcBuyClientComponent implements OnInit {
 
     } else if (this.summary.serviceItem.filter(item => item.typeName === serviceItem.typeName)[0]) {
       //this.summary.serviceItem.indexOf(this.summary.serviceItem.find(item => item.typeName == serviceItem.typeName));
-      this.summary.serviceItem.splice(this.summary.serviceItem.indexOf(serviceItem), 1);
-      this.summary.serviceItem.push(serviceItem);
+      this.summary.serviceItem[
+        this.summary.serviceItem.indexOf(
+        this.summary.serviceItem.filter(item => item.typeName === serviceItem.typeName)[0])
+      ] =  serviceItem; 
+     // this.summary.serviceItem.push();
     }
     this.summaryTotal();
-
-
   }
 
   //Calcular Total no Summary
@@ -169,6 +174,11 @@ export class DcBuyClientComponent implements OnInit {
   }
 
   confirm() {
+    this.summary.fields.forEach(element => {
+      if (element.value === null || element.value == ''){
+        this.summary.fields.splice(this.summary.fields.indexOf(element));
+      }
+    });
     this.clienteService.placeOrder(this.summary).subscribe(ok => this.ok(), error => { this.loading.showLoading(false); this.alert.error("Error in order!"); this.isOrder = false });
   }
   ok() {
@@ -198,12 +208,12 @@ export class DcBuyClientComponent implements OnInit {
     } else {
       this.fields.find(iten => iten == field).value = inputValue;
       if (field.value === '' && this.summary.fields.filter(iten => iten.name == field.name)[0]) {
-        this.summary.fields.splice(this.summary.fields.indexOf(this.summary.fields.filter(iten => iten.name === field.name)[0]));
+        this.summary.fields[this.summary.fields.indexOf(this.summary.fields.filter(iten => iten.name === field.name)[0])] = field;
         if (field.required == 1)
           return false;
         else
           return true;
-      } else if (field.value != '') {
+      } else {
         this.addFieldToSummary(this.fields.find(iten => iten.name == field.name));
       }
     }
@@ -224,15 +234,22 @@ export class DcBuyClientComponent implements OnInit {
 
   placeOrder() {
 
-    if (this.summary.fields.length < this.fields.length || this.summary.serviceItem.length < this.typesItem.length || this.summary.datacenter.id == null && this.datacenters != null) {
+    if (this.summary.fields.length < this.fields.length || this.summary.serviceItem.length < this.typesItem.length || this.summary.datacenter.id == null && this.datacenters.length > 0) {
       var name = "";
-      if (this.summary.datacenter.id == null && this.datacenters != null) {
+      
+      if (this.datacenters.length > 0 && this.summary.datacenter.id == null) {
         this.alert.warn("Select one DataCenter!");
       }
 
       this.fields.forEach(element => {
-        if (element.value === '' || element.value == null) {
+        if ((element.value === '' || element.value == null)&& element.required == 1) {
           this.alert.warn("Fill in " + element.name);
+        }if(element.fieldType == 4){
+          this.getFieldChildren(element.id).forEach(children => {
+            if ((children.value === '' || children.value == null)&& element.required == 1) {
+              this.alert.warn("Fill in " + element.name +" on your additional " + children.name);
+            }
+          });
         }
       });
 
@@ -259,11 +276,7 @@ export class DcBuyClientComponent implements OnInit {
     var fieldFilha = new Field();
     this.contField++;
     var filhas = this.getFieldChildren(field.id).length;
-
-
     fieldFilha.name = "" + (filhas + 1);
-
-
     fieldFilha.clientServiceId = field.clientServiceId;
     fieldFilha.dataType = field.dataType;
     fieldFilha.fieldDescription = field.fieldDescription;
@@ -312,7 +325,6 @@ export class DcBuyClientComponent implements OnInit {
   }
 
   addFieldChecked(id, value) {
-
     if (this.getFieldChecked(id).find(element => element === value)) {
       this.getFieldChecked(id).splice(this.getFieldChecked(id).indexOf(value), 1);
     } else {

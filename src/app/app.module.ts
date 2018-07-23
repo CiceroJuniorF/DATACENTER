@@ -44,12 +44,12 @@ import { SettingsService } from './shared/settings.service';
     CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [{ provide: Http, useClass: HttpService },
-    SettingsService,
-    {
-      provide: LOCALE_ID,
-      deps:[SettingsService],
-      useFactory:(settings) => settings.getLocale()
-    },
+    // SettingsService,
+    // {
+    //   provide: LOCALE_ID,
+    //   deps:[SettingsService],
+    //   useFactory:(settings) => settings.getLocale()
+    // },
     AppService, 
     AuthGuard, 
     UploadFileService, 

@@ -22,8 +22,7 @@ export class DcGroupComponent implements OnInit {
   ngOnInit() {
     this.inscricao = this.route.params.subscribe(
       (params: any) => {
-        if (params['idCLient'] != undefined) {
-          this.onGroupss();
+        if (params['idCLient'] != undefined) {         
           this.onGroupsClient(params['idCLient']);          
         } else {
           this.onGroups(params['idService']);
@@ -38,7 +37,8 @@ export class DcGroupComponent implements OnInit {
     if (id != undefined) {
       this.service.getGroupsSelected(id).subscribe(data => {
         this.groups = data;
-        this.groups
+        console.log(JSON.parse(data));
+        data
           .forEach(element => {
             if (element.selected == 1) {
               this.updateGroups(element);
@@ -47,7 +47,7 @@ export class DcGroupComponent implements OnInit {
         this.loading.showLoading(false);
       }, error => this.alert.error("Ocorreu um erro no carregamento dos dados."))
     } else {
-      this.service.getGroups(-1).subscribe(data => { this.groups = data; this.loading.showLoading(false); }, error => { this.loading.showLoading(false); this.alert.error("Ocorreu um erro no carregamento dos dados.") });
+      this.service.getGroups(-1).subscribe(data => { this.groups = data;this.loading.showLoading(false); }, error => { this.loading.showLoading(false); this.alert.error("Ocorreu um erro no carregamento dos dados.") });
     }
 
 
@@ -60,20 +60,24 @@ export class DcGroupComponent implements OnInit {
   }
  
   onGroupsClient(id) {
+    this.onGroupss();
     this.service.getGroups(-1).subscribe(data => {
       this.service.getGroupClient(id).subscribe(dados => {
         data.forEach(element => {
           dados.forEach(group => {
             if (element.id == group.groupTypeId) {
               element.selected = 1;
-              this.groups.find(value => value.id == element.id).selected = 1;
+             
+              this.updateGroups(element);
+              
             }
           });
         });
         this.loading.showLoading(false);
       },
-        error => { this.loading.showLoading(false); this.alert.error("Ocorreu um erro no carregamento dos dados."); });
-      this.checkedGroup = data;
+      error => { this.loading.showLoading(false); this.alert.error("Ocorreu um erro no carregamento dos dados."); });
+      //this.checkedGroup = data;
+      this.groups = data;
       this.loading.showLoading(false);
     }, error => { this.loading.showLoading(false); this.alert.error("Ocorreu um erro no carregamento dos dados."); });
 

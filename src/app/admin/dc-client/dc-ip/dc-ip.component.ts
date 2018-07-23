@@ -41,6 +41,7 @@ export class DcIpComponent implements OnInit {
         if (params['idCLient'] != undefined) {
           this.service.getIp(params['idCLient']).subscribe(data => {
             this.ips = data;
+            console.log(data);
             this.alterList.emit(data);
             this.loading.showLoading(false);
           }, error => { this.loading.showLoading(false); this.alert.error("Ocorreu um erro no carregamento dos dados!") })

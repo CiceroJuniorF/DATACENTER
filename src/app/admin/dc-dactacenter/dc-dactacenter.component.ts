@@ -31,7 +31,7 @@ export class DcDactacenterComponent implements OnInit {
   }
 
   save() {
-    this.service.save(this.datacenter).subscribe(data => {
+    this.service.saveDataCenter(this.datacenter).subscribe(data => {
       this.loading.showLoading(false);
       this.alertService.success("DataCenter " + data + " salvo com sucesso!");
       this.ngOnInit();

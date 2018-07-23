@@ -11,7 +11,13 @@
 </div>
 
 <div class="container areas">
+
+    
   <hr class="featurette-divider">
+  <div>
+      <input style="width:100%;" (keyup)="onSearch(text.value)" type="text" class="form-control" placeholder="Search..." #text>
+  </div>
+  <br>
   <!-- Example row of columns -->
   <div style=" width:100%;
                 height:450px;
@@ -28,8 +34,8 @@
         <th></th>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let service of servicesClient">
+    <tbody *ngIf="listSearch.length > 0">
+      <tr *ngFor="let service of listSearch">
         <td>{{service.dataCenterName}}</td>
         <td>{{service.serviceName}}</td>
         <td>{{service.registryDate | date:'dd/MM/yyyy'}}</td>
@@ -41,8 +47,13 @@
             <i class="fa fa-plus" aria-hidden="true"></i>
           </a>
         </td>
-      </tr>
+      </tr>      
     </tbody>
+    <tbody *ngIf="!listSearch.length > 0">
+        <tr>
+          <td colspan="7">A busca não retornou resultados</td>
+        </tr>
+      </tbody>
   </table>
   </div>
 

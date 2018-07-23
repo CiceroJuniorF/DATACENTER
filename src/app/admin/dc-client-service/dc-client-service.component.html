@@ -12,19 +12,19 @@
     <div class="form-group">
       <div class="col-md-12">
         <label>Cliente:</label>
-        <input style="width:100%;" [(ngModel)]="nameClient" type="text" class="form-control" placeholder="Search...">
+        <input style="width:100%;" [(ngModel)]="nameClient" (keyup.enter)="onSearch()" type="text" class="form-control" placeholder="Search...">
       </div>
     </div>
     <div class="form-group">
       <div class="col-md-12">
         <label>Service:</label>
-        <input style="width:100%;" [(ngModel)]="nameService" type="text" class="form-control" placeholder="Search...">
+        <input style="width:100%;" [(ngModel)]="nameService"  (keyup.enter)="onSearch()" type="text" class="form-control" placeholder="Search...">
       </div>
     </div>
     <div class="form-inline">
       <div class="col-md-4">
         <label class="checkbox-inline">
-          <input type="radio" name="status" [value]="1" [(ngModel)]="status" /> Aguardando Aprovação Contratação
+          <input type="radio" name="status" [value]="1"   [(ngModel)]="status" /> Aguardando Aprovação Contratação
         </label>
       </div>
       <div class="col-md-4">

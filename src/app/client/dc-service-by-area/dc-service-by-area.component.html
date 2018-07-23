@@ -19,7 +19,7 @@
         <a [routerLink]="['/cliente','clientService',area.id,service.id]" [title]="service.name" style="font-size: 15px;">
             <img [src]="getMethod(service.id)" alt="IMG" class="img-service">
           <h4 class="mb-0 pb-2">{{service.name}}</h4>
-          <p class="text-center">{{service.description}}
+          <p class="text-justify">{{service.description}}
             </p>
         </a>
         <p>

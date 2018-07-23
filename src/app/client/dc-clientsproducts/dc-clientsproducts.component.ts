@@ -21,6 +21,7 @@ export class DcClientsproductsComponent implements OnInit {
 
   areas: Area[] = [];
   servicesClient: ClientService[] = [];
+  listSearch: ClientService[] = [];
   area: Area = new Area();
   inscricao: Subscription;
   id: string;
@@ -51,7 +52,7 @@ export class DcClientsproductsComponent implements OnInit {
     this.areas = data;
     this.area = this.areas.filter(area => area.name === this.id)[0];
     this.service.getClientService(this.area.id, this.service.getAppService().getUser().clientId)
-      .subscribe(data => {this.servicesClient = data; this.loading.showLoading(false)}, error => this.erro());
+      .subscribe(data => {this.servicesClient = data;this.listSearch = data; this.loading.showLoading(false)}, error => this.erro());
   }
 
   loadClientProduct(service){
@@ -71,6 +72,24 @@ export class DcClientsproductsComponent implements OnInit {
 
   erro() {
     this.alert.error('There was an error loading data please contact an administrator!');
+    this.loading.showLoading(false);
+  }
+
+  onSearch(value) {
+    this.loading.showLoading(true);
+   
+    this.listSearch = [];
+    if(value === ''){
+      this.listSearch = this.servicesClient;
+    }else{
+      this.servicesClient.forEach(element => {
+        if(element.serviceName.toUpperCase().match(value.toUpperCase())               
+        ){
+
+          this.listSearch.push(element);
+        }  
+      });
+    }
     this.loading.showLoading(false);
   }
 

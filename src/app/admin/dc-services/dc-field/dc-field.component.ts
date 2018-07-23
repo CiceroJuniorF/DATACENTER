@@ -88,20 +88,18 @@ export class DcFieldComponent implements OnInit {
     this.field.fieldValues = this.replaceField(this.field.fieldValues);
     if (this.isEdit == true) {
       this.isEdit = false;
-      this.alterList.emit(this.fields);
-      this.resetField();
     } else {
       this.fields.push(this.field);
-      this.alterList.emit(this.fields);
-      this.resetField();
     }
+    this.alterList.emit(this.fields);
+    this.resetField();
    
   }
 
   edit(iten) {
     this.fields = this.fields;
     this.field = iten;
-    this.field.fieldValues = this.replaceField2(this.field.fieldValues);
+    if(this.field.fieldValues !== null) this.field.fieldValues = this.replaceField2(this.field.fieldValues);
     this.isEdit = true;
     //this.fieldEdit =iten; 
   }
@@ -129,7 +127,7 @@ export class DcFieldComponent implements OnInit {
 
   remove(iten) {
     if (iten.id === null) {
-      
+      this.fields.splice(this.fields.indexOf(iten), 1); 
     } else {
       this.service.deleFieldIten("field", iten.id).subscribe(data => { this.loading.showLoading(false); this.alert.success("Deletado!");this.fields.splice(this.fields.indexOf(iten), 1); },
         error => { this.loading.showLoading(false); this.alert.error("Erro!") });
