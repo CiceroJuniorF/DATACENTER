@@ -11,7 +11,8 @@ export class FormUploadComponent implements OnInit {
 
   selectedFiles: FileList
   currentFileUpload: File
-  progress: { percentage: number } = { percentage: 0 };
+  message:string;
+  error:boolean;
 
 
   constructor(private uploadService: UploadFileService,private alert:AlertService) { }
@@ -21,18 +22,28 @@ export class FormUploadComponent implements OnInit {
   }
 
   selectFile(event) {
-    const file = event.target.files.item(0)
+    const file = event.target.files.item(0);
 
     if (file.type.match('image.*')) {
-      this.selectedFiles = event.target.files;
+      if(event.target.files.item(0).size >= 1048576){ 
+      
+       this.message = "Tamanho excedido!";
+       this.error = true;      
+      }else{        
+        this.selectedFiles = event.target.files;
+
+        this.message = "Completo!";
+        this.error = false;
+      }      
     } else {
-        this.alert.warn('Invalida format!');
-    }
+        this.message = "Não é uma imagem.";
+        this.error = true;
+    }    
+     
   }
 
   upload(name) {
-    if(this.selectedFiles != undefined){
-      this.progress.percentage = 0;
+    if(this.selectedFiles != undefined && !this.error){           
       this.currentFileUpload = this.selectedFiles.item(0);
       this.uploadService.pushFileToStorage(this.currentFileUpload, name);    
     }

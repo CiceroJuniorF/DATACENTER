@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminService } from '../shared/admin.service';
+import { Component, OnInit, Compiler } from '@angular/core';
 import { AlertService } from '../../alert/_services';
 import { LoadingService } from '../../loading/loading.service';
 import { DataCenter } from '../../shared/model/datacenter';
+import { AdminService } from '../shared/admin.service';
+import { UploadFileService } from '../upload/upload-file.service';
 
 @Component({
   selector: 'app-dc-dactacenter',
@@ -14,11 +15,12 @@ export class DcDactacenterComponent implements OnInit {
   status: number = 3;
   datacenters: DataCenter[] = [];
   datacenter: DataCenter;
-  constructor(private service: AdminService, private alertService: AlertService, private loading: LoadingService) { }
+  urlImage:string;
+  constructor(private service: AdminService, private alertService: AlertService, private loading: LoadingService,private upload:UploadFileService,private _compiler: Compiler) { _compiler.clearCache() }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.datacenter = new DataCenter;
-    this.datacenter.id = null;
+    this.datacenter.id = null;    
     this.onSearch();
   }
 
@@ -28,18 +30,21 @@ export class DcDactacenterComponent implements OnInit {
 
   edit(datacenter) {
     this.datacenter = datacenter;
+    this.urlImage = this.service.getUrlImageDC("DS"+datacenter.id);
   }
 
   save() {
     this.service.saveDataCenter(this.datacenter).subscribe(data => {
+      this.upload.uploadEvent("DS"+data);
       this.loading.showLoading(false);
-      this.alertService.success("DataCenter " + data + " salvo com sucesso!");
-      this.ngOnInit();
+      this.alertService.success("DataCenter " + data + " salvo com sucesso!");      
+      location.reload();
     }, erro => {
       this.loading.showLoading(false);
       this.alertService.error("Ocorreu um erro");
       this.reset();
     });
+
   }
   reset(){
     this.datacenter = new DataCenter;
@@ -53,5 +58,6 @@ export class DcDactacenterComponent implements OnInit {
       return true;
     }
   }
+
 
 }

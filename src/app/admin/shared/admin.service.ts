@@ -174,6 +174,10 @@ export class AdminService {
     return this.service.getUrl()+'files/'+name+'.png'
   }
 
+  getUrlImageDC(name){
+    return this.service.getUrl()+'files/'+name+'.jpeg'
+  }
+
   getDataCenter(name) {
     this.loading.showLoading(true);
     if (name === '') {

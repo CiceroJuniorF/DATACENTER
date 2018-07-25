@@ -16,7 +16,6 @@ export class LoginAuth implements CanActivate {
       this.router.navigate(['notfound'])
       return false;
     }
-
     return true;
 
   }

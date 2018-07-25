@@ -15,7 +15,6 @@ import { LoginAuth } from 'app/guards/login-auth.guard';
 import { InternalerrorComponent } from './internalerror/internalerror.component';
 import { AdminModule } from 'app/admin/admin.module';
 import { AuthAdminGuard } from 'app/guards/auth-admin.guard';
-import { NotificationsModule, NotificationsService } from 'angular4-notify';
 import { AlertComponent } from './alert/_directives';
 import { AlertService } from './alert/_services';
 import { LoadingComponent } from './loading/loading.component';
@@ -37,8 +36,7 @@ import { SettingsService } from './shared/settings.service';
     HttpModule,
     ClientModule,
     ReactiveFormsModule,
-    routing, AdminModule,
-    NotificationsModule
+    routing, AdminModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
@@ -55,7 +53,6 @@ import { SettingsService } from './shared/settings.service';
     UploadFileService, 
     LoginAuth, 
     AuthAdminGuard, 
-    NotificationsService, 
     AlertService, 
     LoadingService],
   bootstrap: [AppComponent]

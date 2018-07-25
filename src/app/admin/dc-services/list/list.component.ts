@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Service } from 'app/client/shared/model/service';
 import { AdminService } from 'app/admin/shared/admin.service';
 import { Router } from '@angular/router';
-import { NotificationsService } from 'angular4-notify';
 import { AlertService } from '../../../alert/_services';
 import { LoadingService } from '../../../loading/loading.service';
 

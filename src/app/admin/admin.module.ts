@@ -27,6 +27,7 @@ import { FormUploadComponent } from './upload/form-upload.component';
 import { DetailsUploadComponent } from './upload/details-upload.component';
 import { DcDactacenterComponent } from './dc-dactacenter/dc-dactacenter.component';
 import { DcClientServiceComponent } from './dc-client-service/dc-client-service.component';
+import { DcImagesCarrouselComponent } from './dc-images-carrousel/dc-images-carrousel.component';
 
 
 
@@ -66,7 +67,8 @@ import { DcClientServiceComponent } from './dc-client-service/dc-client-service.
     FormUploadComponent,
     DetailsUploadComponent,
     DcDactacenterComponent,
-    DcClientServiceComponent 
+    DcClientServiceComponent,
+    DcImagesCarrouselComponent 
   ]
 })
 export class AdminModule { }

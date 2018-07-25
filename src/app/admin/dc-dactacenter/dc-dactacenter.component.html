@@ -37,7 +37,7 @@
           <td>{{datacenter.id}}</td>
           <td>{{datacenter.name}}</td>
           <td>
-            <a (click)="edit(datacenter)"data-toggle="modal" data-target="#modalDC">
+            <a (click)="edit(datacenter)" data-toggle="modal" data-target="#modalDC">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
           </td>
@@ -72,17 +72,25 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-8">
-              <label for="name">Nome:</label>
-              <input type="text" class="form-control" [(ngModel)]="datacenter.name">
-              <label for="name">Descrição:</label>
-              <textarea class="form-control" rows="3" [(ngModel)]="datacenter.description" placeholder="Enter ..."></textarea>
+            <label for="name">Nome:</label>
+            <input type="text" class="form-control" [(ngModel)]="datacenter.name">
+            <label for="name">Descrição:</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="datacenter.description" placeholder="Enter ..."></textarea>
+            <div class="form-group">
+              <label>Imagem:</label>
+              <label style="color:red;">Obs*:Imagens no formato .jpg</label>
+              <form-upload></form-upload>
+              <details-upload [fileUpload]='urlImage'></details-upload>           
+            </div>
+            
+                
+            
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="save()" data-dismiss="modal">Salvar</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="save()" data-dismiss="modal">Salvar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>

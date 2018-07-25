@@ -64,8 +64,7 @@ export class DcClientsproductsComponent implements OnInit {
   alterService(productService){
     this.productService = productService;
     this.productService.field.forEach(element => {
-        element.value = element.value.split('][').join('  |  ');
-             
+        element.value = element.value.split('][').join('  |  ');             
     });
     this.loading.showLoading(false);
   }
@@ -76,8 +75,7 @@ export class DcClientsproductsComponent implements OnInit {
   }
 
   onSearch(value) {
-    this.loading.showLoading(true);
-   
+    this.loading.showLoading(true);   
     this.listSearch = [];
     if(value === ''){
       this.listSearch = this.servicesClient;
@@ -85,7 +83,6 @@ export class DcClientsproductsComponent implements OnInit {
       this.servicesClient.forEach(element => {
         if(element.serviceName.toUpperCase().match(value.toUpperCase())               
         ){
-
           this.listSearch.push(element);
         }  
       });

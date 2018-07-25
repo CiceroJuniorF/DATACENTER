@@ -23,7 +23,7 @@ export class DcServiceByAreaComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private service: DcClientService,
-    private serviceApp: AppService, private loading:LoadingService,private _compiler: Compiler) { }
+    private serviceApp: AppService, private loading:LoadingService,private _compiler: Compiler) { _compiler.clearCache()}
 
   ngOnInit() {
     
