@@ -1,5 +1,6 @@
 export class User{
-    public id:number =null ;
+    public userIfoId:number =null ;
+    public clientId:number =null ;
     public nome:string =null ;
     public email:string =null ;
     public fone:string =null ;

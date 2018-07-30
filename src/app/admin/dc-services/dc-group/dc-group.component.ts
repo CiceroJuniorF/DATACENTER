@@ -36,8 +36,7 @@ export class DcGroupComponent implements OnInit {
   onGroups(id) {
     if (id != undefined) {
       this.service.getGroupsSelected(id).subscribe(data => {
-        this.groups = data;
-        console.log(JSON.parse(data));
+        this.groups = data;       
         data
           .forEach(element => {
             if (element.selected == 1) {

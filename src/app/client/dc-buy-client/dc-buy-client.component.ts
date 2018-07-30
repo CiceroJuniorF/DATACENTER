@@ -100,7 +100,9 @@ export class DcBuyClientComponent implements OnInit {
       if (element.fieldType == 1 || element.fieldType == 2) {
         _fieldRadio = new FieldRadio();
         _fieldRadio.id = element.id;
-        _fieldRadio.values = element.fieldValues.split("|");
+        if(element.fieldValues != null && element.fieldValues != '' && element.fieldValues != undefined ){
+          _fieldRadio.values = element.fieldValues.split("|");
+        }
         if ((element.fieldValueDefault !== null || element.fieldValueDefault !== undefined)
           && _fieldRadio.values.find(value => value === element.fieldValueDefault)) {
           this.addField(element.fieldValueDefault, element);
@@ -214,7 +216,7 @@ export class DcBuyClientComponent implements OnInit {
         else
           return true;
       } else {
-        this.addFieldToSummary(this.fields.find(iten => iten.name == field.name));
+        this.addFieldToSummary(this.fields.find(iten => iten.id == field.id));
       }
     }
 
@@ -233,8 +235,20 @@ export class DcBuyClientComponent implements OnInit {
   }
 
   placeOrder() {
+    var fieldIsEmpty = false;
+    this.fields.forEach(element => {
+      if ((element.value === '' || element.value == null)&& element.required == 1) {
+        fieldIsEmpty = true;
+      }if(element.fieldType == 4){
+        this.getFieldChildren(element.id).forEach(children => {
+          if ((children.value === '' || children.value == null)&& element.required == 1) {
+            fieldIsEmpty = true;
+          }
+        });
+      }
+    });
 
-    if (this.summary.fields.length < this.fields.length || this.summary.serviceItem.length < this.typesItem.length || this.summary.datacenter.id == null && this.datacenters.length > 0) {
+    if (this.summary.fields.length < this.fields.length ||  fieldIsEmpty || this.summary.serviceItem.length < this.typesItem.length || this.summary.datacenter.id == null && this.datacenters.length > 0) {
       var name = "";
       
       if (this.datacenters.length > 0 && this.summary.datacenter.id == null) {
@@ -303,8 +317,13 @@ export class DcBuyClientComponent implements OnInit {
     return xpto.fields;
   }
   getFieldValues(id) {
-    var xpto = this.fieldRadio.find(element => element.id === id);
-    return xpto.values;
+    if(this.fieldRadio.find(element => element.id === id)){
+
+      return this.fieldRadio.find(element => element.id === id).values;
+    }else{
+      return null;
+    }
+
   }
 
   search(fields, field) {
@@ -324,21 +343,26 @@ export class DcBuyClientComponent implements OnInit {
     return false;
   }
 
-  addFieldChecked(id, value) {
-    if (this.getFieldChecked(id).find(element => element === value)) {
-      this.getFieldChecked(id).splice(this.getFieldChecked(id).indexOf(value), 1);
+  addFieldChecked(field, value) {
+    if (this.getFieldChecked(field.id).find(element => element === value)) {
+      this.getFieldChecked(field.id).splice(this.getFieldChecked(field.id).indexOf(value), 1);
     } else {
-      this.getFieldChecked(id).push(value);
+      this.getFieldChecked(field.id).push(value);
     }
-    var field = this.summary.fields.find(element => element.id == id);
-    field.value = '';
-    if (this.getFieldChecked(id).length > 0) {
-      this.getFieldChecked(id).forEach(value => {
-        field.value += value;
-        field.value += '|';
-      });
-      field.value = field.value.substr(0, (field.value.length - 1));
+    if(this.summary.fields.find(element => element.id == field.id)){      
+      var fieldIntern = this.summary.fields.find(element => element.id == field.id);
+      fieldIntern.value = '';
+      if (this.getFieldChecked(field.id).length > 0) {
+        this.getFieldChecked(field.id).forEach(value => {
+          fieldIntern.value += value;
+          fieldIntern.value += '|';
+        });
+        fieldIntern.value = fieldIntern.value.substr(0, (fieldIntern.value.length - 1));
+      }
+    }else{
+      this.addField(field, value);
     }
+  
 
   }
 
@@ -352,5 +376,15 @@ export class DcBuyClientComponent implements OnInit {
 
       this.getFieldChildren(field.id).splice(this.getFieldChildren(field.id).indexOf(field), 1);
     }
+  }
+
+  summaryIsEmpty(){
+    let isEmpty = true;
+    this.summary.fields.forEach(element => {
+      if(element.value !== null && element.value !== ''){
+        isEmpty = false;
+      }
+    });
+    return (this.summary.serviceItem.length == 0 && !this.isVisible && isEmpty);
   }
 }

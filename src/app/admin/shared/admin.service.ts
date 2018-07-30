@@ -6,6 +6,17 @@ import { LoadingService } from '../../loading/loading.service';
 @Injectable()
 export class AdminService {
 
+  deleteCarrousel(arg0: any): any {
+    throw new Error("Method not implemented.");
+  }
+  saveCarrousel(arg0: any): any {
+    throw new Error("Method not implemented.");
+  }
+
+  getCarrousel(arg0: any): any {
+    throw new Error("Method not implemented.");
+  }
+
   constructor(private service: AppService, private http: Http, private loading: LoadingService) { }
   url = 'admin/service';
   urlClient = 'admin/client'
@@ -21,6 +32,18 @@ export class AdminService {
   getService(id) {
     this.loading.showLoading(true);
     return this.http.get(this.service.getUrl() + this.url + "/service/" + id)
+      .map(res => res.json());
+  }
+
+  deleteServiceItenType(id) {
+    this.loading.showLoading(true);
+    return this.http.delete(this.service.getUrl() + this.url + "/delete-serviceIten/" + id)
+      .map(res => res.json());
+  }
+
+  saveServiceItenType(type) {
+    this.loading.showLoading(true);
+    return this.http.post(this.service.getUrl() + this.url + "/save-serviceIten", JSON.stringify(type), this.service.getHeader())
       .map(res => res.json());
   }
 
@@ -49,6 +72,12 @@ export class AdminService {
   getDataCenters(id) {
     this.loading.showLoading(true);
     return this.http.get(this.service.getUrl() + this.url + "/data-center/" + id)
+      .map(res => res.json());
+  }
+
+  deleteDataCenters(id) {
+    this.loading.showLoading(true);
+    return this.http.delete(this.service.getUrl() + 'admin/datacenter' + "/delete-datacenter/" + id)
       .map(res => res.json());
   }
 

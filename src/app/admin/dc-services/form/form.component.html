@@ -181,4 +181,16 @@
   </div>
 </div>
 <button (click)="save()" style="width:100%" class="btn btn-primary">Save</button>
+<div class="row" *ngIf="messageAlert !== ''">
+    <div class="col-2"></div>
+    <div class="col alert-error" style="margin-top: 4%; border-color:#666;
+    border-radius: 5px;">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 text-justify">{{messageAlert}}</div>
+        <div class="col-1"></div>
+      </div>
+    </div>
+    <div class="col-2"></div>
+</div>
 <!-- {{serviceModel | json}} -->

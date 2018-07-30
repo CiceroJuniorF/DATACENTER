@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active dropdown">
-                  <button class="nav-link" data-toggle="dropdown">DataCenters
+                  <button class="nav-link" data-toggle="dropdown">Data Centers
                     <span class="sr-only">(current)</span>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -62,13 +62,15 @@
                 <!-- The user image in the menu -->
                 <li class="user-header">
                   <p>
-                   {{user.email}} - {{user.typeName}}
-                   <small>Member since Nov. 2012</small>
+                   {{user.email}} - {{user.typeName}}                    
                   </p>
                 </li>
       
                 <!-- Menu Footer-->
                 <li class="user-footer">
+                    <div class="pull-left">
+                        <a  [routerLink]="['my-profile']" class="btn btn-default btn-flat">My Profile</a>
+                      </div>
                   <div class="pull-right">
                     <a (click)="logout()" class="btn btn-default btn-flat">Sign out</a>
                   </div>

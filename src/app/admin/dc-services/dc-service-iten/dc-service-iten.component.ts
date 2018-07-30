@@ -115,4 +115,10 @@ export class DcServiceItenComponent implements OnInit {
     }
   }
 
+  alterType($event){
+    this.service.getServiceItenType().subscribe(data => { this.serviceItenTypes = data; this.loading.showLoading(false); }, error => {
+      this.loading.showLoading(false); this.router.navigate(['/internal-error']);
+    });
+  }
+
 }

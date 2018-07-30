@@ -15,12 +15,14 @@
     <hr class="featurette-divider">
     <!-- Example row of columns -->
     <div class="row text-center ">
-      <div class="col-lg-3" *ngFor="let service of services" style="font-size: 10px;">
+      <div class="col-lg-4 space" *ngFor="let service of services" style="font-size: 10px;">
         <a [routerLink]="['/cliente','clientService',area.id,service.id]" [title]="service.name" style="font-size: 15px;">
             <img [src]="getMethod(service.id)" alt="IMG" class="img-service">
           <h4 class="mb-0 pb-2">{{service.name}}</h4>
-          <p class="text-justify">{{service.description}}
-            </p>
+          <div>
+              <p class="text-justify">{{service.description}}
+              </p>
+          </div>          
         </a>
         <p>
           <a class="btn btn-primary" [routerLink]="['/cliente','clientService',area.id,service.id]" role="button">Contract &raquo;</a>

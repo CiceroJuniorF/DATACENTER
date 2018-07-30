@@ -59,5 +59,22 @@ export class DcDactacenterComponent implements OnInit {
     }
   }
 
+  delete(id){
+    this.service.deleteDataCenters(id).subscribe(data => {
+      this.loading.showLoading(false);
+      if(data.message != 'Não é possível apagar este datacenter, pois esta atribuido a um serviço'){
+        this.service.deleteImage("DS"+id).subscribe();
+        this.alertService.success (data.message);    
+      }else{
+        this.alertService.info (data.message);  
+      }    
+
+    }, erro => {
+      this.loading.showLoading(false);
+      this.alertService.error("Ocorreu um erro");
+      this.reset();
+    });
+  }
+
 
 }

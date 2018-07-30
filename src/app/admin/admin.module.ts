@@ -28,6 +28,8 @@ import { DetailsUploadComponent } from './upload/details-upload.component';
 import { DcDactacenterComponent } from './dc-dactacenter/dc-dactacenter.component';
 import { DcClientServiceComponent } from './dc-client-service/dc-client-service.component';
 import { DcImagesCarrouselComponent } from './dc-images-carrousel/dc-images-carrousel.component';
+import { DcServiceItenTypeComponent } from './dc-services/dc-service-iten/dc-service-iten-type/dc-service-iten-type.component';
+import { DcControlServiceItenTypeComponent } from './dc-control-service-iten-type/dc-control-service-iten-type.component';
 
 
 
@@ -68,7 +70,9 @@ import { DcImagesCarrouselComponent } from './dc-images-carrousel/dc-images-carr
     DetailsUploadComponent,
     DcDactacenterComponent,
     DcClientServiceComponent,
-    DcImagesCarrouselComponent 
+    DcImagesCarrouselComponent,
+    DcServiceItenTypeComponent,
+    DcControlServiceItenTypeComponent 
   ]
 })
 export class AdminModule { }

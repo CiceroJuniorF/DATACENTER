@@ -14,6 +14,8 @@ import { AdminClientFormComponent } from './dc-client/form/form.component';
 import { DcDactacenterComponent } from './dc-dactacenter/dc-dactacenter.component';
 import { DcClientService } from '../client/shared/dc-client.service';
 import { DcClientServiceComponent } from './dc-client-service/dc-client-service.component';
+import { DcControlServiceItenTypeComponent } from './dc-control-service-iten-type/dc-control-service-iten-type.component';
+import { DcImagesCarrouselComponent } from './dc-images-carrousel/dc-images-carrousel.component';
 
 
 const GESTAO: Routes = [
@@ -39,7 +41,10 @@ const GESTAO: Routes = [
           path: 'form/:idCLient', component: AdminClientFormComponent
         }]},
         { path: 'datacenter', component: DcDactacenterComponent},
-        { path: 'client-service', component: DcClientServiceComponent}
+        { path: 'client-service', component: DcClientServiceComponent},
+        { path: 'service-iten-type-control', component: DcControlServiceItenTypeComponent},
+        { path: 'carrousel-options', component: DcImagesCarrouselComponent},
+        
     ],
     canActivate: [AuthAdminGuard]
   }

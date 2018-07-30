@@ -15,6 +15,7 @@ import { DcClientsproductsComponent } from './dc-clientsproducts/dc-clientsprodu
 import { DcDatacentersComponent } from './dc-datacenters/dc-datacenters.component';
 import { DetailsUploadComponent } from '../admin/upload/details-upload.component';
 import { AdminService } from '../admin/shared/admin.service';
+import { ClientProfileComponent } from './client-profile/client-profile.component';
 
 
 
@@ -39,7 +40,8 @@ import { AdminService } from '../admin/shared/admin.service';
     DcServiceByAreaComponent,
     DcBuyClientComponent,
     DcClientsproductsComponent,
-    DcDatacentersComponent],
+    DcDatacentersComponent,
+    ClientProfileComponent],
   providers: [DcClientService,AdminService]
 })
 export class ClientModule { }

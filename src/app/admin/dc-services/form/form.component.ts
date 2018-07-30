@@ -15,6 +15,7 @@ import { UploadFileService } from '../../upload/upload-file.service';
   templateUrl: './form.component.html'
 })
 export class AdminFormComponent implements OnInit {
+  messageAlert: string ='';
   listArea: Area[] = [];
   linguas: Language[] = [];
   serviceModel: ServiceModel = new ServiceModel();
@@ -169,7 +170,10 @@ export class AdminFormComponent implements OnInit {
         this.loading.showLoading(false);
         this.alert.success("Salvo com Sucesso!");
       },
-      error => {this.loading.showLoading(false);this.alert.error("Ocorreu um erro! Por favor verifique se todos os campos obrigatórios estão preenchidos.\n")}
+      error => {this.loading.showLoading(false);
+        this.alert.warn("Ocorreu um erro ao salvar, veja mais detalhes ao fim da página.")
+        this.messageAlert = "Ocorreu um erro na hora de salvar o service, isto pode ocorrer devido algum campo *obrigatório de um ou mais FIELDs, SERVICE ITENs não estar preenchido. Ou algum campo do próprio service não estar preenchido. Favor verificar e tentar novamente!"; 
+    }
     );
   }
 

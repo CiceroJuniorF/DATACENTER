@@ -44,39 +44,29 @@
                 <span class="sr-only">(current)</span>
               </button>
             </li>
+            <li class="nav-item active dropdown">
+                <button class="nav-link" routerLink="service-iten-type-control" data-toggle="dropdown">Item Type
+                  <span class="sr-only">(current)</span>
+                </button>
+            </li>
+            <li class="nav-item active dropdown">
+                <button class="nav-link" routerLink="carrousel-options" data-toggle="dropdown">Carrousel
+                  <span class="sr-only">(current)</span>
+                </button>
+            </li>
+            <li class="nav-item active dropdown">
+                <button class="nav-link" (click)="logout()" data-toggle="dropdown">
+                    <span class="sr-only">(current)</span>
+                    <i class="fa fa-sign-out" aria-hidden="true" style="color: white;
+                    font-size: 20px;"></i>
+                </button>
+                
+              </li>
+            
+           
           </ul>
         </div>
       </div>
-      <!-- /.navbar-collapse -->
-      <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- User Account Menu -->
-          <li class="dropdown user user-menu">
-            <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">{{user.email}}</span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- The user image in the menu -->
-              <li class="user-header">
-                <p>
-                  {{user.email}} - {{user.typeName}}
-                  <small>Member since Nov. 2012</small>
-                </p>
-              </li>
-
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-right">
-                  <a (click)="logout()" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <!-- /.navbar-custom-menu -->
     </div>
     <!-- /.container-fluid -->
   </nav>

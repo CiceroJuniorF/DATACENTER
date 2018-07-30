@@ -4,7 +4,9 @@
 @import "~admin-lte/dist/css/skins/skin-blue-light.min.css";
 @import "~admin-lte/dist/css/skins/skin-blue-light.css";
 
-
+.space{
+    margin-top:3%;
+}
 .lds-spinner {
     margin-top: 50%;
     left: 40%;
@@ -3095,6 +3097,9 @@ button {
 
 .bg-dark a {
     color: #ffffff;
+}
+.coonfil{
+    margin-top: 10%;
 }
 
 i.fa {
