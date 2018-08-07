@@ -26,7 +26,7 @@ export class DcImagesCarrouselComponent implements OnInit {
   }
 
   onSearch() {
-    this.service.getCarrousel(this.name).subscribe(data => { this.carrousels = data; this.loading.showLoading(false) }, error => { this.loading.showLoading(false); this.alertService.error("Ocorreu um erro") })
+    this.service.getCarrousel().subscribe(data => { this.carrousels = data; this.loading.showLoading(false) }, error => { this.loading.showLoading(false); this.alertService.error("Ocorreu um erro") })
   }
 
   edit(carrousel) {
@@ -38,8 +38,8 @@ export class DcImagesCarrouselComponent implements OnInit {
     this.service.saveCarrousel(this.carrousel).subscribe(data => {
       this.upload.uploadEvent("CS"+data);
       this.loading.showLoading(false);
-      this.alertService.success("Carrousel " + data + " salvo com sucesso!");      
-      location.reload();
+      this.alertService.success("Carrousel " + data + " salvo com sucesso!");     
+     
     }, erro => {
       this.loading.showLoading(false);
       this.alertService.error("Ocorreu um erro");
@@ -65,7 +65,8 @@ export class DcImagesCarrouselComponent implements OnInit {
       this.loading.showLoading(false);
       if(data.message != 'Não é possível apagar este carrousel, pois esta atribuido a um serviço'){
         this.service.deleteImage("CS"+id).subscribe();
-        this.alertService.success (data.message);    
+        this.alertService.success (data.message);
+        this.onSearch();
       }else{
         this.alertService.info (data.message);  
       }    

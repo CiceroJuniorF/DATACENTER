@@ -10,6 +10,7 @@ import { ProductService } from 'app/client/shared/model/productService';
 import { Product } from 'app/client/shared/model/products';
 import { LoadingService } from '../../loading/loading.service';
 import { AlertService } from '../../alert/_services';
+import { AdminService } from '../../admin/shared/admin.service';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class DcClientsproductsComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private service: DcClientService,
-    private serviceApp: AppService, private loading:LoadingService, private alert:AlertService) { }
+    private serviceApp: AppService, private loading:LoadingService, private alert:AlertService,
+    private adminService:AdminService) { }
 
   ngOnInit() {
     //Pegar parametro de rota
@@ -88,6 +90,16 @@ export class DcClientsproductsComponent implements OnInit {
       });
     }
     this.loading.showLoading(false);
+  }
+
+  cancelService(idService){
+    this.adminService.cancelService(idService, this.service.appService.getUser().clientId).subscribe(
+      data => {
+        this.alert.info(data.message);
+        this.loading.showLoading(false);
+        this.onSearch('');
+      }
+    )
   }
 
 }

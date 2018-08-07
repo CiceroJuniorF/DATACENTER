@@ -18,13 +18,13 @@
     <div class="form-group">
       <div class="col-md-12">
         <label>Service:</label>
-        <input style="width:100%;" [(ngModel)]="nameService"  (keyup.enter)="onSearch()" type="text" class="form-control" placeholder="Search...">
+        <input style="width:100%;" [(ngModel)]="nameService" (keyup.enter)="onSearch()" type="text" class="form-control" placeholder="Search...">
       </div>
     </div>
     <div class="form-inline">
       <div class="col-md-4">
         <label class="checkbox-inline">
-          <input type="radio" name="status" [value]="1"   [(ngModel)]="status" /> Aguardando Aprovação Contratação
+          <input type="radio" name="status" [value]="1" [(ngModel)]="status" /> Aguardando Aprovação Contratação
         </label>
       </div>
       <div class="col-md-4">
@@ -65,9 +65,19 @@
           <td>{{cs.document}}</td>
           <td>{{cs.areaName}}</td>
           <td>{{cs.serviceName}}</td>
-          <td>
+          <td *ngIf="cs.type === 1">
             <a (click)="load(cs)" data-toggle="modal" data-target="#modalDC">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </a>
+          </td>
+          <td *ngIf="cs.type === 3">
+            <a (click)="load(cs)" data-toggle="modal" data-target="#modalDC">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </a>
+          </td>
+          <td *ngIf="cs.type === 2">
+            <a (click)="load(cs)" data-toggle="modal" data-target="#modalDC">
+              <i class="fa fa-remove" aria-hidden="true"></i>
             </a>
           </td>
         </tr>
@@ -86,7 +96,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalDCTitle">Aprove</h5>
+        <h5 class="modal-title" id="modalDCTitle">{{clientService.clientName}}</h5>
         <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -107,15 +117,50 @@
               <b>Área: </b> {{clientService.areaName}}</p>
             <p class="text-left">
               <b>Service: </b> {{clientService.serviceName}}</p>
+            <p class="text-left">
+              <b>Data Solicitação: </b> {{clientService.registryDate | date:'dd/MM/yyyy hh:mm:ss'}}</p>
+            <p class="text-left">
+              <b>Usuário solicitante: </b> {{clientService.registryByUser}}</p>
+            <p class="text-left" *ngIf="clientService.type === 3">
+              <b>Data Cancelamento: </b> {{clientService.cancelDate | date:'dd/MM/yyyy hh:mm:ss'}}</p>
+            <p class="text-left" *ngIf="clientService.type === 3">
+              <b>Cancelado por: </b> {{clientService.cancelByUser}}</p>
+            <p class="text-left" *ngIf="clientService.type === 3 || clientService.type === 2 ">
+              <b>Data Aprovação: </b> {{clientService.approvalDate | date:'dd/MM/yyyy hh:mm:ss'}}</p>
+            <p class="text-left" *ngIf="clientService.type === 3 || clientService.type === 2 ">
+              <b>Aprovado por: </b> {{clientService.approvalByUser}}</p>
+            <p class="text-left" *ngIf="clientService.type === 3">
+              <b>Data de aprovação de cancelamnto: </b> {{clientService.approvalCancelDate | date:'dd/MM/yyyy hh:mm:ss'}}</p>
+            <p class="text-left" *ngIf="clientService.type === 3">
+              <b>Aprovado cancelamento por: </b> {{clientService.approvalCancelByUser}}</p>
+            <p class="text-left">
+              <b>Data Center: </b> {{clientService.datacenter}}</p>
+            <p class="text-left" >
+              <b>Total: </b> {{clientService.total | currency:'BRL':true:'1.2-2'}}</p>
+
+            <!-- <p class="text-left">
+              <b>Usuário solicitante: </b> {{clientService.total}}</p>
+            <p class="text-left">
+              <b>Usuário solicitante: </b> {{clientService.datacenter}}</p> -->
+            <div *ngFor="let field of productService.field">
+              <p class="text-left">
+                <b>{{field.fieldDescription}}: </b>
+                <span style="text-indent:5px;	width:250px;">{{field.value}}</span>
+              </p>
+            </div>
+            <div *ngFor="let service of productService.service">
+              <p class="text-left">
+                <b>{{service.typeName}}: </b> {{service.labelForDescription}} ({{service.price | currency:'BRL':true:'1.2-2'}})</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-       
-            <button type="button" style="width: 100%"class="btn btn-success" (click)="accept()" data-dismiss="modal">Aceitar</button>
-        
+      <div class="modal-footer" *ngIf="clientService.type === 1 || clientService.type === 2">
 
-        
+        <button type="button" style="width: 100%" class="btn btn-success" (click)="accept()" data-dismiss="modal">Aceitar</button>
+
+
+
       </div>
     </div>
   </div>

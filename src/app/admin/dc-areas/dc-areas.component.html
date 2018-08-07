@@ -3,7 +3,7 @@
     <div class="container areas" style="margin-top:10%;">
       <div class="container row text-center">
         <div class="col-lg-10">
-          <h2 class="text-left">Carrousel</h2>
+          <h2 class="text-left">DataCenter</h2>
         </div>
       </div>
     </div>
@@ -22,16 +22,16 @@
           </tr>
         </thead>
         <tbody *ngIf="isEmpty()">
-          <tr *ngFor="let carrousel of carrousels">
-            <td>{{carrousel.id}}</td>
-            <td>{{carrousel.name}}</td>
+          <tr *ngFor="let area of areas">
+            <td>{{area.id}}</td>
+            <td>{{area.name}}</td>
             <td>
-              <a (click)="edit(carrousel)" data-toggle="modal" data-target="#modalDC">
+              <a (click)="edit(area)" data-toggle="modal" data-target="#modalAR">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </a>
             </td>
             <td>
-              <a (click)="delete(carrousel.id)">
+              <a (click)="delete(area.id)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </a>
             </td>
@@ -44,15 +44,15 @@
         </tbody>
       </table>
     </div>
-    <a class="btn btn-primary" data-toggle="modal" data-target="#modalDC">Adicionar</a>
+    <a class="btn btn-primary" data-toggle="modal" data-target="#modalAR">Adicionar</a>
     <hr class="featurette-divider">
   </div>
   
-  <div class="modal modalDC" id="modalDC" tabindex="-1" role="dialog" aria-labelledby="modalDC" aria-hidden="true">
+  <div class="modal modalAR" id="modalAR" tabindex="-1" role="dialog" aria-labelledby="modalAR" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalDCTitle">Adicionar Carrousel</h5>
+          <h5 class="modal-title" id="modalARTitle">Adicionar Area</h5>
           <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -62,15 +62,20 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
               <label for="name">Nome:</label>
-              <input type="text" class="form-control" [(ngModel)]="carrousel.name">
-              <label for="name">Descrição:</label>
-              <textarea class="form-control" rows="3"  maxlength="500" [(ngModel)]="carrousel.description" placeholder="Enter ..."></textarea>
+              <input type="text" class="form-control" [(ngModel)]="area.name">
+              <label for="name">Pedaço da descrição:</label>
+              <textarea class="form-control" rows="3" [(ngModel)]="area.partialDescription" placeholder="Enter ..."></textarea>
+              <label for="name">Descrição Inteira:</label>
+              <textarea class="form-control" rows="3" [(ngModel)]="area.fullDescription" placeholder="Enter ..."></textarea>
               <div class="form-group">
                 <label>Imagem:</label>
-                <label style="color:red;">Obs*:Imagens no formato .jpg</label>
+                <label style="color:red;">Obs*:Imagens no formato .png</label>
                 <form-upload></form-upload>
                 <details-upload [fileUpload]='urlImage'></details-upload>           
-              </div>                           
+              </div>
+              
+                  
+              
             </div>
           </div>
           <div class="modal-footer">

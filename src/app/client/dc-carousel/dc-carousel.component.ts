@@ -19,7 +19,7 @@ export class DcCarouselComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.getAllDatacenters().subscribe(
+    this.serviceAdmin.getCarrousel().subscribe(
       data => {
         this.datacenters = data;
       }

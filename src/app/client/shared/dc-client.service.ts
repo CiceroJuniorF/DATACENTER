@@ -44,9 +44,9 @@ export class DcClientService {
   }
 
 
-  getServicesByArea(idArea) {
+  getServicesByArea(idArea,idClient) {
     this.loading.showLoading(true);
-    return this.http.get(this.service.getUrl() + "client/services/" + idArea)
+    return this.http.get(this.service.getUrl() + "client/services/" + idArea + "/"+idClient)
       .map(res => res.json());
   }
 

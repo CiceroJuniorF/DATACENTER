@@ -49,9 +49,9 @@ export class DcBuyClientComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private clienteService: DcClientService,
-    private serviceApp: AppService, private alert: AlertService, private loading: LoadingService) {
+    private serviceApp: AppService, private alert: AlertService, private loading: LoadingService,private servicePri:AppService) {
   }
-
+  user:User = this.servicePri.getUser();
   ngOnInit() {
     //Resgatar Parametros
     this.inscricao = this.route.params.subscribe(
@@ -60,7 +60,7 @@ export class DcBuyClientComponent implements OnInit {
         this.idService = params['idService'];
       });
     //Buscar Area
-    this.clienteService.getServicesByArea(this.idArea)
+    this.clienteService.getServicesByArea(this.idArea,this.user.clientId)
       .subscribe(data => this.getService(data), error => this.erro());
     //Buscar Sevicos
     this.clienteService.getServicesItemByService(this.idService)

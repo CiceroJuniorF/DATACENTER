@@ -30,6 +30,7 @@ import { DcClientServiceComponent } from './dc-client-service/dc-client-service.
 import { DcImagesCarrouselComponent } from './dc-images-carrousel/dc-images-carrousel.component';
 import { DcServiceItenTypeComponent } from './dc-services/dc-service-iten/dc-service-iten-type/dc-service-iten-type.component';
 import { DcControlServiceItenTypeComponent } from './dc-control-service-iten-type/dc-control-service-iten-type.component';
+import { DcAreasComponent } from './dc-areas/dc-areas.component';
 
 
 
@@ -72,7 +73,8 @@ import { DcControlServiceItenTypeComponent } from './dc-control-service-iten-typ
     DcClientServiceComponent,
     DcImagesCarrouselComponent,
     DcServiceItenTypeComponent,
-    DcControlServiceItenTypeComponent 
+    DcControlServiceItenTypeComponent,
+    DcAreasComponent 
   ]
 })
 export class AdminModule { }

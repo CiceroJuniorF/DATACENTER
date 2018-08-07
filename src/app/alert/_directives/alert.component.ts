@@ -15,13 +15,14 @@ import { defer } from 'rxjs/observable/defer';
 })
 
 export class AlertComponent {
+    value = 10000;
     alerts: Alert[] = [];
     constructor(private alertService: AlertService) {
         setInterval(() => { 
             if(this.alerts.length > 0){
                 this.removeAlert(this.alerts[0]);
             }
-        }, 10000);
+        }, this.value);
     }
 
     ngOnInit() {
@@ -33,6 +34,7 @@ export class AlertComponent {
             }
 
             // add alert to array
+            this.value = 10000;
             this.alerts.push(alert);            
         });
     }
@@ -63,7 +65,7 @@ export class AlertComponent {
         const interval = 1000;
         const duration = 10 * 1000;
         return Observable.timer(0, 10 * 1000000)
-            .finally(() => console.log("Fecho Porra"))
+            .finally(() => console.log("Fechou"))
             .map(value => alert);
 
     }

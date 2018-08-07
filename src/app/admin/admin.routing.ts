@@ -16,12 +16,13 @@ import { DcClientService } from '../client/shared/dc-client.service';
 import { DcClientServiceComponent } from './dc-client-service/dc-client-service.component';
 import { DcControlServiceItenTypeComponent } from './dc-control-service-iten-type/dc-control-service-iten-type.component';
 import { DcImagesCarrouselComponent } from './dc-images-carrousel/dc-images-carrousel.component';
+import { DcAreasComponent } from './dc-areas/dc-areas.component';
 
 
 const GESTAO: Routes = [
   {
     path: 'admin', component: AdminComponent, children: [
-      { path: '', redirectTo: 'services',pathMatch: 'full' },
+      { path: '', redirectTo: 'client-service',pathMatch: 'full' },
       {
         path: 'services', component: DcServicesComponent, children: [
           { path: '', component: AdminListComponent },
@@ -44,6 +45,7 @@ const GESTAO: Routes = [
         { path: 'client-service', component: DcClientServiceComponent},
         { path: 'service-iten-type-control', component: DcControlServiceItenTypeComponent},
         { path: 'carrousel-options', component: DcImagesCarrouselComponent},
+        { path: 'areas', component: DcAreasComponent},
         
     ],
     canActivate: [AuthAdminGuard]

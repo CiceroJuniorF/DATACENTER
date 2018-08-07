@@ -90,6 +90,7 @@
             <b>{{service.typeName}}: </b> {{service.labelForDescription}} ({{service.price | currency:'BRL':true:'1.2-2'}})</p></div>
       </div>
       <div class="modal-footer">
+          <button type="button" (click)="cancelService(serviceClient.idClientService)" class="btn btn-danger" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
       </div>
     </div>

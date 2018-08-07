@@ -6,15 +6,43 @@ import { LoadingService } from '../../loading/loading.service';
 @Injectable()
 export class AdminService {
 
-  deleteCarrousel(arg0: any): any {
-    throw new Error("Method not implemented.");
+
+  cancelService(idService,idUser) {
+    this.loading.showLoading(true);
+    return this.http.get(this.service.getUrl() + this.url + "/cancel-service-client/" + idService +"/"+ idUser)
+      .map(res => res.json());
   }
-  saveCarrousel(arg0: any): any {
-    throw new Error("Method not implemented.");
+  getAreas(){
+    this.loading.showLoading(true);
+    return this.http.get(this.service.getUrl() + "admin/area" + "/get-area")
+      .map(res => res.json());
+  }
+  saveArea(area): any {
+    this.loading.showLoading(true);
+    return this.http.post(this.service.getUrl() + "admin/area" + "/save-area", JSON.stringify(area), this.service.getHeader())
+      .map(res => res.json());
+  }
+  deleteArea(id) {
+    this.loading.showLoading(true);
+    return this.http.delete(this.service.getUrl() + "admin/area" + "/delete-area/" + id)
+      .map(res => res.json());
   }
 
-  getCarrousel(arg0: any): any {
-    throw new Error("Method not implemented.");
+  deleteCarrousel(id) {
+    this.loading.showLoading(true);
+    return this.http.delete(this.service.getUrl() + "admin/carrousel" + "/delete-carrousel/" + id)
+      .map(res => res.json());
+  }
+  saveCarrousel(carrousel) {
+    this.loading.showLoading(true);
+    return this.http.post(this.service.getUrl() + "admin/carrousel" + "/save-carrousel", JSON.stringify(carrousel), this.service.getHeader())
+      .map(res => res.json());
+  }
+
+  getCarrousel() {
+    this.loading.showLoading(true);
+    return this.http.get(this.service.getUrl() + "admin/carrousel" + "/get-carrousel")
+      .map(res => res.json());
   }
 
   constructor(private service: AppService, private http: Http, private loading: LoadingService) { }
@@ -111,7 +139,7 @@ export class AdminService {
 
   getServicesItemByService(idService) {
     this.loading.showLoading(true);
-    return this.http.get(this.service.getUrl() +  this.url + "/service-iten/" + idService)
+    return this.http.get(this.service.getUrl() + this.url + "/service-iten/" + idService)
       .map(res => res.json());
   }
   getFieldsByService(idService) {
@@ -126,9 +154,9 @@ export class AdminService {
       .map(res => res.json());
   }
 
-  deleFieldIten(type,idService) {
+  deleFieldIten(type, idService) {
     this.loading.showLoading(true);
-    return this.http.delete(this.service.getUrl() + this.url + "/delete-field-iten/"+type+"/"+ idService)
+    return this.http.delete(this.service.getUrl() + this.url + "/delete-field-iten/" + type + "/" + idService)
       .map(res => res.json());
   }
 
@@ -199,12 +227,12 @@ export class AdminService {
       .map(res => res);
   }
 
-  getUrlImage(name){
-    return this.service.getUrl()+'files/'+name+'.png'
+  getUrlImage(name) {
+    return this.service.getUrl() + 'files/' + name + '.png'
   }
 
-  getUrlImageDC(name){
-    return this.service.getUrl()+'files/'+name+'.jpeg'
+  getUrlImageDC(name) {
+    return this.service.getUrl() + 'files/' + name + '.jpeg'
   }
 
   getDataCenter(name) {
@@ -212,7 +240,7 @@ export class AdminService {
     if (name === '') {
       name = 'vazio';
     }
-    return this.http.get(this.service.getUrl() + "admin/datacenter"+ "/get/" + name)
+    return this.http.get(this.service.getUrl() + "admin/datacenter" + "/get/" + name)
       .map(res => res.json());
   }
 
@@ -222,7 +250,7 @@ export class AdminService {
       .map(res => res.json());
   }
 
-  searchClientService(clientName,serviceName,option) {
+  searchClientService(clientName, serviceName, option) {
     this.loading.showLoading(true);
     if (clientName === '') {
       clientName = 'vazio';
@@ -230,13 +258,13 @@ export class AdminService {
     if (serviceName === '') {
       serviceName = 'vazio';
     }
-    return this.http.get(this.service.getUrl() + "admin/client-service"+ "/search/" + clientName+"/"+serviceName+"/"+option)
+    return this.http.get(this.service.getUrl() + "admin/client-service" + "/search/" + clientName + "/" + serviceName + "/" + option)
       .map(res => res.json());
   }
 
-  approveClientService(clientid,action) {
+  approveClientService(clientid, action) {
     this.loading.showLoading(true);
-    return this.http.get(this.service.getUrl() + "admin/client-service"+ "/aprove/" + clientid+"/"+this.service.getUser().userIfoId+"/"+action)
+    return this.http.get(this.service.getUrl() + "admin/client-service" + "/aprove/" + clientid + "/" + this.service.getUser().userIfoId + "/" + action)
       .map(res => res.json());
   }
 

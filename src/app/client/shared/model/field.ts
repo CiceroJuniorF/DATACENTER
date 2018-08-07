@@ -15,7 +15,7 @@ export class Field{
 	 * 3 - combo box
 	 * 4 - Additional  (possíbilidade de adicionar várias linhas)*/
 	public fieldType=null;
-	public fieldDescription:string='';
+	public fieldDescription:string= null;
 	public fieldValues:string=null;
 	public fieldValueDefault:string=null;
 	public isUsedForPrice:number=null;

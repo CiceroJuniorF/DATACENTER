@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
           this.service.login(this.form.value).subscribe(user =>{
             this.service.setUser(user);
             if (user.administrator === 1) {
-              this.router.navigate(['admin', 'services']);
+              this.router.navigate(['admin']);
             } else {
               this.router.navigate(['cliente']);
             }

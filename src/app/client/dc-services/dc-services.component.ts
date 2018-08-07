@@ -19,8 +19,8 @@ export class DcServicesComponent implements OnInit {
       .subscribe(data => this.areas = data, error => this.erro())
   }
 
-  getMethod(name) {
-    return "../../assets/img/area/" + name + ".png";
+  getMethod(id) {
+    return this.service.getUrlImage('AR'+id);
   }
 
   erro(){

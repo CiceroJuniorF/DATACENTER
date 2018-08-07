@@ -38,7 +38,6 @@ export class DcDactacenterComponent implements OnInit {
       this.upload.uploadEvent("DS"+data);
       this.loading.showLoading(false);
       this.alertService.success("DataCenter " + data + " salvo com sucesso!");      
-      location.reload();
     }, erro => {
       this.loading.showLoading(false);
       this.alertService.error("Ocorreu um erro");

@@ -37,13 +37,13 @@ export class DcServiceByAreaComponent implements OnInit {
     //Consumir as areas
    
   }
-
+  
   startService(id){
     this.id = id;
     this.service.getArea()
     .subscribe(data => this.loadArea(data), error => this.erro());
 
-  this.service.getServicesByArea(this.id)
+  this.service.getServicesByArea(this.id,this.serviceApp.getUser().clientId)
     .subscribe(data => {this.services = data, this.loading.showLoading(false)}, error => this.erro());
   }
  
