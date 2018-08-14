@@ -200,11 +200,33 @@
     margin-top: 10%;
     margin-left: 50%;
     margin-right: 10%;
+
+}
+@-webkit-keyframes example {
+   
+    0%   { margin-left: 0%; 
+        right:100%;}
+    10%  { right:90%;}
+    20%  { right:80%;}
+    30%  { right:70%;}
+    40%  { right:60%;}
+    50%  { right:50%;}
+    60%  { right:40%;}
+    80%  { right:30%;}
+    90%  { right:20%;}
+    95%   { right:15%;}
+    98%   { right:13%;}
+    100%  { right:10%;}
 }
 
 #alert .alert {
     margin-top: 10px;
     z-index: 99999;
+    -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 0.5s; /* Safari 4.0 - 8.0 */
+    animation-name: example;
+    animation-duration: 0.5s;
+    
 }
 
 .tab-0 {

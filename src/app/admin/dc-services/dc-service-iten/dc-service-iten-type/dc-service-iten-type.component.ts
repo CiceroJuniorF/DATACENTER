@@ -11,7 +11,7 @@ import { LoadingService } from '../../../../loading/loading.service';
 })
 export class DcServiceItenTypeComponent implements OnInit {
 
-  @Output() saveType = new EventEmitter();
+  @Output() saveType:EventEmitter<any> = new EventEmitter();
   type:ServiceItenType =new ServiceItenType();
   constructor(private service: AdminService,private alert:AlertService,private loading:LoadingService) { }
 
@@ -21,10 +21,10 @@ export class DcServiceItenTypeComponent implements OnInit {
   save(){
     this.service.saveServiceItenType(this.type).subscribe(data => {       this.loading.showLoading(false); 
       this.alert.success("Salvo com sucesso!");
-      
+      this.saveType.emit(null);
     }, error => {
       this.loading.showLoading(false); this.alert.error("Ocorreu um erro ao salvar!");
     });
-    this.saveType.emit();
+    
   }
 }

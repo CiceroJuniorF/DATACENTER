@@ -25,7 +25,7 @@ export class FormUploadComponent implements OnInit {
     const file = event.target.files.item(0);
 
     if (file.type.match('image.*')) {
-      if(event.target.files.item(0).size >= 1048576){ 
+      if(event.target.files.item(0).size >= 4000000){
       
        this.message = "Tamanho excedido!";
        this.error = true;      

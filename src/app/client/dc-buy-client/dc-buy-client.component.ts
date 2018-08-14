@@ -86,6 +86,7 @@ export class DcBuyClientComponent implements OnInit {
   }
 
   getFields(data) {
+    console.log(data);
     this.fields = data;
     var _fieldAditional;
     var _fieldRadio;
@@ -97,7 +98,7 @@ export class DcBuyClientComponent implements OnInit {
         _fieldAditional.fields = [];
         this.fieldAdditional.push(_fieldAditional);
       }
-      if (element.fieldType == 1 || element.fieldType == 2) {
+      if (element.fieldType == 1 || element.fieldType == 2 || element.fieldType == 3) {
         _fieldRadio = new FieldRadio();
         _fieldRadio.id = element.id;
         if(element.fieldValues != null && element.fieldValues != '' && element.fieldValues != undefined ){
@@ -106,8 +107,10 @@ export class DcBuyClientComponent implements OnInit {
         if ((element.fieldValueDefault !== null || element.fieldValueDefault !== undefined)
           && _fieldRadio.values.find(value => value === element.fieldValueDefault)) {
           this.addField(element.fieldValueDefault, element);
+        }else{
+          this.addField('', element);
         }
-        if (element.fieldType == 2) {
+        if (element.fieldType == 2 || element.fieldType == 3) {
           _fieldChecked = new FieldRadio();
           _fieldChecked.id = _fieldRadio.id;
           _fieldChecked.values = [];
@@ -125,6 +128,19 @@ export class DcBuyClientComponent implements OnInit {
         this.addField(element.fieldValueDefault, element);
     });
     this.loading.showLoading(false);
+  }
+
+  listOptionsAdditional:any[] = [];
+  fieldMoment = new Field();
+  fiedlAdditionaSelect ='';
+
+  add(item){
+    this.fiedlAdditionaSelect = item;
+  }
+  setFieldOptions(field){
+    this.fieldMoment = field;
+    this.listOptionsAdditional = this.fieldMoment.fieldValues.split('|');
+    console.log(this.listOptionsAdditional);
   }
 
 
@@ -287,29 +303,36 @@ export class DcBuyClientComponent implements OnInit {
   }
   teste = null;
   setField(field: Field) {
-    var fieldFilha = new Field();
-    this.contField++;
-    var filhas = this.getFieldChildren(field.id).length;
-    fieldFilha.name = "" + (filhas + 1);
-    fieldFilha.clientServiceId = field.clientServiceId;
-    fieldFilha.dataType = field.dataType;
-    fieldFilha.fieldDescription = field.fieldDescription;
-    fieldFilha.fieldType = field.fieldType;
-    fieldFilha.fieldValueDefault = field.fieldValueDefault;
-    fieldFilha.fieldValues = field.fieldValues;
-    fieldFilha.hint = field.hint;
-    fieldFilha.label = field.label;
-    fieldFilha.id = field.id;
-    fieldFilha.isUsedForPrice = field.isUsedForPrice;
-    fieldFilha.price = field.price;
-    fieldFilha.required = field.required;
-    fieldFilha.value = field.value;
-    fieldFilha.children = true;
-    //console.log(field.id, fieldFilha.id);
-    var xpto = this.fieldAdditional.find(element => element.id === field.id);
-    xpto.fields.push(fieldFilha);
-    //console.log(xpto.fields);    
-    this.addField(fieldFilha.value, fieldFilha);
+    if(field.fieldValueDefault == null){
+      field.fieldValueDefault =this.fiedlAdditionaSelect;
+      this.addField(this.fiedlAdditionaSelect,field);
+      this.fiedlAdditionaSelect ='';
+    }else{
+      var fieldFilha = new Field();
+      this.contField++;
+      var filhas = this.getFieldChildren(field.id).length;
+      fieldFilha.name = "" + (filhas + 1);
+      fieldFilha.clientServiceId = field.clientServiceId;
+      fieldFilha.dataType = field.dataType;
+      fieldFilha.fieldDescription = field.fieldDescription;
+      fieldFilha.fieldType = field.fieldType;
+      fieldFilha.fieldValueDefault = field.fieldValueDefault;
+      fieldFilha.fieldValues = field.fieldValues;
+      fieldFilha.hint = field.hint;
+      fieldFilha.label = field.label;
+      fieldFilha.id = field.id;
+      fieldFilha.isUsedForPrice = field.isUsedForPrice;
+      fieldFilha.price = field.price;
+      fieldFilha.required = field.required;
+      fieldFilha.value = this.fiedlAdditionaSelect; 
+      fieldFilha.children = true;
+      //console.log(field.id, fieldFilha.id);
+      var xpto = this.fieldAdditional.find(element => element.id === field.id);
+      xpto.fields.push(fieldFilha);
+      //console.log(xpto.fields);    
+      this.addField(fieldFilha.value, fieldFilha);
+      this.fiedlAdditionaSelect ='';
+    }
   }
 
   getFieldChildren(id) {
@@ -367,15 +390,20 @@ export class DcBuyClientComponent implements OnInit {
   }
 
   getFieldChecked(id) {
-    return this.fieldCheckSelected.find(element => element.id = id).values;
+    return this.fieldCheckSelected.find(element => element.id == id).values;
   }
 
+  delFieldPai(field){   
+      let fieldPai = this.fields.find(element=>element.id ==field.id);
+      fieldPai.fieldValueDefault =null;
+      this.summary.fields.splice(this.summary.fields.indexOf(fieldPai), 1);    
+  }
   delField(field) {
-    if (field.children) {
+    if (field.children) {      
       this.summary.fields.splice(this.summary.fields.indexOf(field), 1);
-
       this.getFieldChildren(field.id).splice(this.getFieldChildren(field.id).indexOf(field), 1);
     }
+    
   }
 
   summaryIsEmpty(){

@@ -7,7 +7,7 @@
   <ng-container *ngFor="let data of datacenters;let i = index">
     <div class="carousel-inner">
       <div [class.active]="i == active" class="carousel-item active">
-        <img [class]="getClass(data.id)" [src]="serviceAdmin.getUrlImageDC('DS'+data.id)">
+        <img [class]="getClass(data.id)" [src]="serviceAdmin.getUrlImageDC('CS'+data.id)">
         <div class="container">
           <div class="carousel-caption text-left">
             <h1>{{data.name}}.</h1>

@@ -8,13 +8,14 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Rx';
 import { Response } from '_debugger';
+import { LoadingService } from '../loading/loading.service';
 
 @Injectable()
 export class AppService {
 
    //URL DEV LOCAL
    private url: string = "http://173.193.174.50:8080/"
-   constructor(private http: Http) { }
+   constructor(private http: Http, private loading:LoadingService) { }
  
    getHeader() {
      let headers = new Headers();
@@ -29,7 +30,8 @@ export class AppService {
         .map(res => res.json());          
    }
   
-   gerarToken(appKey){  
+   gerarToken(appKey){
+    this.loading.showLoading(true);  
     let header = new Headers();
     return this.http.post(this.url + "token/login", JSON.stringify(appKey)).map(res => res);
     

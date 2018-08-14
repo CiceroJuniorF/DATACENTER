@@ -65,7 +65,6 @@ export class DcClientServiceComponent implements OnInit {
   onSearch() {
     this.service.searchClientService(this.nameClient, this.nameService, this.status).subscribe(data => {
       this.clientServices = data;
-      this.clientService.type = 3;
       console.log(data);
       this.loading.showLoading(false);
     }, error => {

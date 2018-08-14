@@ -71,5 +71,9 @@ export class DcCarouselComponent implements OnInit {
 
   }
 
+  getMethod(name){
+    this.serviceAdmin.getUrlImageDC("CS"+name);
+  }
 
+  
 }

@@ -34,7 +34,7 @@ export class AlertComponent {
             }
 
             // add alert to array
-            this.value = 10000;
+            this.value = 20000;
             this.alerts.push(alert);            
         });
     }

@@ -21,14 +21,16 @@ export class UploadFileService {
   pushFileToStorage(file: File,name) {
     let formdata: FormData = new FormData();
     let extension = file.type.substr(file.type.indexOf('/')+1,file.type.length-1);
-    formdata.append('file', file, name+'.'+ extension); 
-   
+    formdata.append('file', file, name+'.'+ extension);    
     let token = window.sessionStorage.getItem('token');
     let xhr = new XMLHttpRequest();
-    xhr.open("POST",this.service.getUrl()+'upload',);
+    xhr.open("POST",this.service.getUrl()+'upload');
     xhr.setRequestHeader('Authorization', token);
-    xhr.send(formdata);    
-    location.reload();    
+    xhr.send(formdata);   
+    if(xhr.DONE){
+      this.alert.info("Upload da imagem finalizado!");
+      location.reload(  );
+    }
   }
  
   getFiles(): Observable<string[]> {

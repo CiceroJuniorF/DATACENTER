@@ -18,7 +18,7 @@
                 <span *ngIf="field.isUsedForPrice == 1">({{field.price | currency:'BRL':true:'1.2-2'}} )</span>
 
                 <input class="form-control" [placeholder]="field.fieldDescription" type="text" maxlength="30" required="true" [value]="field.fieldValueDefault"
-                  (keyup)=" addField(inputValue.value,field)" #inputValue>
+                  (keyup)="addField(inputValue.value,field)" #inputValue>
 
               </div>
               <div *ngIf="field.fieldType === 4" class="form-group">
@@ -27,13 +27,28 @@
                     <label class="b-d-black" title="{{field.hint}}">
                       <span *ngIf="field.required == 1">*</span>{{field.name}}: </label>
                     <span *ngIf="field.isUsedForPrice == 1 && !field.children">({{field.price | currency:'BRL':true:'1.2-2'}} )</span>
-                    <a (click)="setField(field)">
+                    <a (click)="setFieldOptions(field)" data-toggle="modal" data-target="#exampleModal">
                       <i class="fa fa-plus-square-o fa-1x" aria-hidden="true"></i>
                     </a>
                   </div>
                   <div>
-                    <input style="width: 100%;" class="form-control" [placeholder]="field.fieldDescription" type="text" maxlength="30" required="true"
-                      [value]="field.fieldValueDefault" (keyup)="addField(inputValue.value,field)" #inputValue>
+                    <div class="row" style="margin-bottom: 4%;">
+                      <div class="col-md-11">
+                        <input style="width: 100%;" class="form-control col-md-11" [placeholder]="field.fieldDescription" type="text" maxlength="30" required="true"
+                          [value]="field.fieldValueDefault" (keyup)="addField(inputValue.value,field)" #inputValue disabled>
+                      </div>
+                      <div class="col-md-1" *ngIf="field.fieldValueDefault != null">
+                        <a (click)="delFieldPai(field)" style="    display: flex;
+                        -webkit-flex-align: center;
+                        -ms-flex-align: center;
+                        -webkit-align-items: center;
+                        align-items: center;
+                        height: 100%;">
+                          <i class="fa fa-minus-square-o"></i>
+                        </a>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
                 <div *ngIf="field.isUsedForPrice == 0 && !field.children" style="height: 10px"></div>
@@ -45,7 +60,7 @@
                     </div>
                     <div class="col-md-10">
                       <input style="width: 100%;" class="form-control" [placeholder]="children.fieldDescription" type="text" maxlength="30" required="true"
-                        [value]="children.fieldValueDefault" (keyup)=" addField(inputValue.value,children)" #inputValue>
+                        [value]="children.value" (keyup)=" addField(inputValue.value,children)" #inputValue disabled>
                     </div>
                     <div class="col-md-1">
                       <a (click)="delField(children)">
@@ -70,7 +85,7 @@
                   </div>
                 </form>
               </div>
-              <div *ngIf="field.fieldType === 2">
+              <div *ngIf="field.fieldType === 2 || field.fieldType === 3 ">
                 <p class="text-left">
                   <label class="b-d-black" title="{{field.hint}}">
                     <span *ngIf="field.required == 1">*</span>{{field.name}}:</label>
@@ -153,11 +168,17 @@
                   <tr *ngIf="!field.children && field.fieldType == 4">
                     <th colspan="3" style="text-align: center;">{{field.name}}</th>
                   </tr>
-                  <tr *ngIf="field.fieldType != 4 && field.fieldType != 2 && field.value !== '' ">
+                  <tr *ngIf="field.fieldType != 4 && field.fieldType != 2 && field.fieldType != 3 && field.value !== '' ">
                     <td colspan="2">{{field.value}}</td>
                     <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
                   </tr>
                   <ng-container *ngIf="field.fieldType == 2 && field.value !== ''">
+                    <tr *ngFor="let checked of getFieldChecked(field.id)">
+                      <td colspan="2">{{checked}}</td>
+                      <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
+                    </tr>
+                  </ng-container>
+                  <ng-container *ngIf="field.fieldType == 3 && field.value !== ''">
                     <tr *ngFor="let checked of getFieldChecked(field.id)">
                       <td colspan="2">{{checked}}</td>
                       <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
@@ -228,16 +249,122 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Message</h5>
+
         <a (click)="close()">
           <span>&times;</span>
         </a>
       </div>
       <div class="modal-body">
-        <p> Your order is correct?</p>
+        <div class="row">
+          <div class="col">
+            <p class="title text-center"> Your order is correct?</p>
+          </div>
+          <div class="col">
+            <p class="text-right">
+              <b>Total: {{summary.total | currency:'BRL':true:'1.2-2'}} </b>
+            </p>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-1">
+
+          </div>
+          <div class="col-10">
+            <table class="table">
+              <tr *ngIf="summaryIsEmpty()">
+                <th colspan="3">Summary is empty!</th>
+              </tr>
+              <tr *ngIf="isVisible">
+                <th>Data Center</th>
+                <td></td>
+                <td>{{summary.datacenter.name}}</td>
+              </tr>
+              <tbody *ngFor="let field of summary.fields; let i = index">
+                <tr *ngIf="!field.children && field.value !== '' && field.fieldType != 4">
+                  <th colspan="3" style="text-align: center;">{{field.name}}</th>
+                </tr>
+                <tr *ngIf="!field.children && field.fieldType == 4">
+                  <th colspan="3" style="text-align: center;">{{field.name}}</th>
+                </tr>
+                <tr *ngIf="field.fieldType != 4 && field.fieldType != 2 && field.fieldType != 3 && field.value !== '' ">
+                  <td colspan="2">{{field.value}}</td>
+                  <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
+                </tr>
+                <ng-container *ngIf="field.fieldType == 2 && field.value !== ''">
+                  <tr *ngFor="let checked of getFieldChecked(field.id)">
+                    <td colspan="2">{{checked}}</td>
+                    <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngIf="field.fieldType == 3 && field.value !== ''">
+                  <tr *ngFor="let checked of getFieldChecked(field.id)">
+                    <td colspan="2">{{checked}}</td>
+                    <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
+                  </tr>
+                </ng-container>
+
+                <ng-container *ngIf="field.fieldType == 4 && !field.children">
+                  <tr *ngIf="field.value !== ''">
+                    <td colspan="2">{{field.value}}</td>
+                    <td>{{field.price | currency:'BRL':true:'1.2-2'}}</td>
+                  </tr>
+                  <ng-container *ngFor="let children of getFieldChildren(field.id)">
+                    <tr *ngIf="children.value !== ''">
+                      <td colspan="2">{{children.value}}</td>
+                      <td>{{children.price | currency:'BRL':true:'1.2-2'}}</td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+
+              </tbody>
+
+              <tbody *ngFor="let item of summary.serviceItem">
+                <tr>
+                  <th colspan="3" style="text-align: center;">{{item.typeName}}</th>
+                </tr>
+                <tr>
+                  <td colspan="2">{{item.name}}</td>
+                  <td>{{item.price | currency:'BRL':true:'1.2-2'}}</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+          <div class="col-1"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
         <button type="button" class="btn btn-primary" (click)="confirm()">Confirm!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{fieldMoment.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="text-center">What do you want to add?</h5>
+        <div class="row text-left" *ngFor="let item of listOptionsAdditional">
+          <div class="col">
+            <span class="input-group-addon">
+              <input type="radio" [id]="item+1" name="item" [value]="item" [checked]="item == fiedlAdditionaSelect" (click)="add(item)">
+              <label class="text-left" [for]="item+1">{{item}} ({{fieldMoment.price | currency:'BRL':true:'1.2-2'}})</label>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="setField(fieldMoment)">ADD</button>
       </div>
     </div>
   </div>

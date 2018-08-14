@@ -26,47 +26,49 @@ export class DcClientsproductsComponent implements OnInit {
   area: Area = new Area();
   inscricao: Subscription;
   id: string;
-  productService:ProductService = new ProductService();
-  serviceClient:ClientService = new ClientService();
+  productService: ProductService = new ProductService();
+  serviceClient: ClientService = new ClientService();
+  isOrder = false;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private service: DcClientService,
-    private serviceApp: AppService, private loading:LoadingService, private alert:AlertService,
-    private adminService:AdminService) { }
+    private serviceApp: AppService, private loading: LoadingService, private alert: AlertService,
+    private adminService: AdminService) { }
 
   ngOnInit() {
     //Pegar parametro de rota
     this.inscricao = this.route.params.subscribe(
       (params: any) => {
         this.id = params['idArea'];
+        //Consumir as areas
+        this.service.getArea()
+          .subscribe(data => this.loadArea(data), error => this.erro());
       });
 
-    //Consumir as areas
-    this.service.getArea()
-      .subscribe(data => this.loadArea(data), error => this.erro());
+
 
     //Consumir as ClientService
-    
+
 
   }
   loadArea(data) {
     this.areas = data;
     this.area = this.areas.filter(area => area.name === this.id)[0];
     this.service.getClientService(this.area.id, this.service.getAppService().getUser().clientId)
-      .subscribe(data => {this.servicesClient = data;this.listSearch = data; this.loading.showLoading(false)}, error => this.erro());
+      .subscribe(data => { this.servicesClient = data; this.listSearch = data; this.loading.showLoading(false) }, error => this.erro());
   }
 
-  loadClientProduct(service){
+  loadClientProduct(service) {
     this.serviceClient = service;
     this.service.getProductService(this.serviceClient.idClientService)
-    .subscribe(productService => this.alterService(productService), error => this.erro());
+      .subscribe(productService => this.alterService(productService), error => this.erro());
   }
 
-  alterService(productService){
+  alterService(productService) {
     this.productService = productService;
     this.productService.field.forEach(element => {
-        element.value = element.value.split('][').join('  |  ');             
+      element.value = element.value.split('][').join('  |  ');
     });
     this.loading.showLoading(false);
   }
@@ -77,27 +79,27 @@ export class DcClientsproductsComponent implements OnInit {
   }
 
   onSearch(value) {
-    this.loading.showLoading(true);   
+    this.loading.showLoading(true);
     this.listSearch = [];
-    if(value === ''){
+    if (value === '') {
       this.listSearch = this.servicesClient;
-    }else{
+    } else {
       this.servicesClient.forEach(element => {
-        if(element.serviceName.toUpperCase().match(value.toUpperCase())               
-        ){
+        if (element.serviceName.toUpperCase().match(value.toUpperCase())
+        ) {
           this.listSearch.push(element);
-        }  
+        }
       });
     }
     this.loading.showLoading(false);
   }
 
-  cancelService(idService){
+  cancelService(idService) {
     this.adminService.cancelService(idService, this.service.appService.getUser().clientId).subscribe(
       data => {
         this.alert.info(data.message);
         this.loading.showLoading(false);
-        this.onSearch('');
+        this.ngOnInit();
       }
     )
   }

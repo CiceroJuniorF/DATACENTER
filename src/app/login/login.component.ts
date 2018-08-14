@@ -37,10 +37,10 @@ export class LoginComponent implements OnInit {
   }
     
 
-  onLogin() {
-    this.loading.showLoading(true);
+  onLogin() {    
     this.service.gerarToken({ "email": this.login.email, "password": this.login.password}).subscribe(
       (res) => {
+        this.loading.showLoading(false);
         var token = res.headers.get('authorization');
         if (token) {
           window.sessionStorage.setItem('token', token);
@@ -51,15 +51,16 @@ export class LoginComponent implements OnInit {
             } else {
               this.router.navigate(['cliente']);
             }
-          }, error =>{} );
+          }, error =>{this.loading.showLoading(false);} );
 
         }
         
       },(err)=>{
         this.onErrorLogin();
+        this.loading.showLoading(false);
       }
     );
-    this.loading.showLoading(false);
+    
 
   }
 

@@ -4,6 +4,7 @@ import { DcClientService } from 'app/client/shared/dc-client.service';
 import { Subscription } from 'rxjs/Rx';
 import { DataCenter } from 'app/shared/model/datacenter';
 import { LoadingService } from '../../loading/loading.service';
+import { AdminService } from '../../admin/shared/admin.service';
 
 @Component({
   selector: 'app-dc-datacenters',
@@ -13,7 +14,9 @@ import { LoadingService } from '../../loading/loading.service';
 export class DcDatacentersComponent implements OnInit {
   inscricao: Subscription;
   datacenter:DataCenter =  new DataCenter();
-  constructor(private router: Router,
+  constructor(
+    private serviceAdmin:AdminService,
+    private router: Router,
     private route: ActivatedRoute,
     private service: DcClientService,private loading:LoadingService) { }
 
