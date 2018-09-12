@@ -1,0 +1,17 @@
+<div class="container areas" style="height: 100%; padding-bottom: 15%;">
+  <hr class="featurette-divider">
+  <div class="container row text-center">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+      <div class="thumbnail">
+        <div class="caption">
+          <h2 class="text-left">{{datacenter.name}}</h2>
+          <br>
+          <p class="text-justify desc-datacenter">{{datacenter.description}}</p>
+        </div>
+        <img [src]="serviceAdmin.getUrlImageDC('DS'+datacenter.id)" alt="Nature" style="width:100%">
+      </div>
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+</div>

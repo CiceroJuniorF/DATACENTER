@@ -1,0 +1,6 @@
+target/
+.settings/
+.classpath
+.project
+
+# Avoid ignoring Maven wrapper jar file (.jar 

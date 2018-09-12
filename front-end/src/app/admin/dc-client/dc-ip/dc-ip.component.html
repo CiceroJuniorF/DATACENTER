@@ -1,0 +1,75 @@
+<div class="col-md-12">
+    <div style=" width:100%;
+                      height:450px;
+                      overflow:auto;">
+      <table class="table table-striped ">
+        <thead>
+          <tr class="thead">
+            <th>Range</th>
+            <th>Banda</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+         <tbody>
+          <tr *ngFor="let ip of ips">
+            <td>{{ip.range}}</td>
+            <td>{{ip.banda}}</td>
+            <td>
+              <a (click)="edit(ip)" class="ignore-tab" data-toggle="modal" data-target="#modalIP">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </a>
+            </td>
+            <td>
+              <a (click)="remove(ip)" class="ignore-tab">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="ips.length < 1">
+          <tr>
+            <td colspan="5">Nada Adicionado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modalIP"> Adicionar </button>
+  
+    <div class="modal modalIP" id="modalIP" tabindex="-1" role="dialog" aria-labelledby="modalIP" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalIPTitle">Adicionar IP</h5>
+            <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+  
+                <form [formGroup]="formName">
+                  <div class="form-group" [class.has-error]="formName.controls['range'].touched && !formName.controls['range'].valid">
+                    <label for="name">Range:</label>
+                    <input type="text" class="form-control" [(ngModel)]="ip.range" formControlName="range">
+                    <p style="color:red" *ngIf="formName.controls['range'].touched && !formName.controls['range'].valid">O campo é obrigatório!</p>
+                  </div>
+                  <div class="form-group" [class.has-error]="formName.controls['banda'].touched && !formName.controls['banda'].valid">
+                    <label>Banda:</label>
+                    <input type="text" class="form-control" [(ngModel)]="ip.banda"  maxlength="30" formControlName="banda">
+                    <p style="color:red" *ngIf="formName.controls['banda'].touched && !formName.controls['banda'].valid">O campo é obrigatório!</p>
+                  </div>  
+                </form>  
+               
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="save()"data-dismiss="modal">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- {{ip | json}} -->
+
+

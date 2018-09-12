@@ -1,0 +1,79 @@
+<div class="container areas" style="margin-top:10%;">
+    <div class="container row text-center">
+      <div class="col-lg-10">
+        <h2 class="text-left">Clientes</h2>
+      </div>
+    </div>
+  </div>
+  <hr class="featurette-divider">
+  <div class="col-md-12">
+      <div class="form-inline">
+        <div class="col-md-6">
+          <input style="width:100%;" [(ngModel)] = "name" (keyup.enter)="onSearchClient()" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <div class="col-md-1">
+          <label class="checkbox-inline">
+            <input type="radio" name="status" value="2" [(ngModel)] = "status" /> Ativado
+          </label>
+        </div>
+        <div class="col-md-1">
+          <label class="checkbox-inline">
+            <input type="radio" name="status" value="1"  [(ngModel)] = "status" /> Desativado
+          </label>
+        </div>
+        <div class="col-md-1">
+          <label class="checkbox-inline">
+            <input type="radio" name="status" value="0"  [(ngModel)] = "status" /> Excluido
+          </label>
+        </div>
+        <div class="col-md-1">
+          <label class="checkbox-inline">
+            <input type="radio" name="status" [value]="3" [(ngModel)] = "status"  > Todos
+          </label>
+        </div>
+        <div class="col-md-2">
+          <button (click)="onSearchClient()" class="btn btn-primary">Search</button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div style=" width:100%;
+                    height:450px;
+                    overflow:auto;">
+      <table class="table table-striped ">
+        <thead>
+          <tr class="thead">
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Status</th>
+            <th>Banda</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngIf = "!isEmpty()">
+          <tr *ngFor="let client of listClient">
+            <td>{{client.id}}</td>
+            <td>{{client.name}}</td>
+            <td>{{client.status | statusPipe}}</td>
+            <td>{{client.banda}}</td>
+            <td>
+              <a [routerLink]="['form',client.id]">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </a>
+            </td>
+            <td>
+              <a (click)="delete(client.id)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+       <tbody *ngIf = "isEmpty()">
+          <tr>
+            <td colspan="5">A busca não retornou resultados</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <a  routerLink="form" class="btn btn-primary">Adicionar</a>

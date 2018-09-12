@@ -1,0 +1,189 @@
+<div class="col-md-12" (hover)="emit()">
+  <div style=" width:100%;
+                    height:450px;
+                    overflow:auto;">
+    <table class="table table-striped ">
+      <thead>
+        <tr class="thead">
+          <th>Nome</th>
+          <th>Tipo de Dado</th>
+          <th>Tipo de Campo</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let field of fields">
+          <td>{{field.name}}</td>
+          <td>{{field.dataType}}</td>
+          <td>{{field.fieldType | fieldType}}</td>
+          <td>
+            <a (click)="edit(field)" class="ignore-tab" data-toggle="modal" data-target="#modalServiceField">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a>
+          </td>
+          <td>
+            <a (click)="remove(field)" class="ignore-tab">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="fields.length < 1">
+        <tr>
+          <td colspan="5">Nada Adicionado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-primary" data-toggle="modal" data-target="#modalServiceField"> Adicionar </button>
+
+  <div class="modal modalServiceField" id="modalServiceField" tabindex="-1" role="dialog" aria-labelledby="modalServiceField"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalServiceFieldTitle">Adicionar Field</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="resetField()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+
+              <form [formGroup]="formName">
+                <div class="form-group" [class.has-error]="formName.controls['name'].touched && !formName.controls['name'].valid">
+                  <label>Nome:</label>
+                  <input type="text" class="form-control" [(ngModel)]="field.name" maxlength="30" formControlName="name">
+                  <p style="color:red" *ngIf="formName.controls['name'].touched && !formName.controls['name'].valid">O campo é obrigatório!</p>
+                </div>
+              </form>
+              <div class="form-group">
+                <label>Tipo de Campo:</label>
+                <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="field.fieldType" style="width: 100%;" tabindex="-1"
+                  aria-hidden="true">
+                  <option selected="selected" [value]="0">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">Text</font>
+                    </font>
+                  </option>
+                  <option value="1">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">Radio</font>
+                    </font>
+                  </option>
+                  <option value="2">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">Check Box</font>
+                    </font>
+                  </option>
+                  <option value="3">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">Combo Box</font>
+                    </font>
+                  </option>
+                  <option value="4">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">Additional</font>
+                    </font>
+                  </option>
+                </select>
+              </div>
+              <div class="form-group" *ngIf="verifica()">
+                <label>Tipo de Dado:</label>
+                <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="field.dataType" style="width: 100%;" tabindex="-1"
+                  aria-hidden="true">
+                  <option selected="selected">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">INTEIRO</font>
+                    </font>
+                  </option>
+                  <option>
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">HORA</font>
+                    </font>
+                  </option>
+                  <option>
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">DATA</font>
+                    </font>
+                  </option>
+                  <option>
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">VARCHAR</font>
+                    </font>
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>É obrigatório?</label>
+                <div class="radio">
+                  <span class="input-group-addon">
+                    <input type="radio" id="true" [checked]="field.required=== 1" name="required" (click)="isRequired(1)">
+                    <label class="text-center" for="true">Sim</label>
+                    <input type="radio" id="false" [checked]="field.required === 0" name="required" (click)="isRequired(0)">
+                    <label class="text-center" for="false">Não</label>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="form-group">
+                    <label>É usado no preço?</label>
+                    <div class="radio">
+                      <span class="input-group-addon">
+                        <input type="radio" id="true" [checked]="field.isUsedForPrice === 1" name="price" (click)="isUserdForPrice(1)">
+                        <label class="text-center" for="true">Sim</label>
+                        <input type="radio" id="false" [checked]="field.isUsedForPrice === 0" name="price" (click)="isUserdForPrice(0)">
+                        <label class="text-center" for="false">Não</label>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Preço:</label>
+                    <input type="number" class="form-control" [disabled]="field.isUsedForPrice === 0" [(ngModel)]="field.price">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Valor do campo:</label>
+                <input *ngIf="field.fieldType == 0" type="text " class="form-control" rows="2" class="form-control" [(ngModel)]="field.fieldValues" placeholder="Enter ...">
+                <textarea  *ngIf="field.fieldType !== 0" class="form-control" rows="2" class="form-control" [(ngModel)]="field.fieldValues" placeholder="Enter ..."></textarea> <span *ngIf="field.fieldType != 0 && field.fieldType != 4">*Obs: Digite um valor em cada linha.</span>
+              </div>
+              <div class="form-group">
+                <label>Valor padrão do campo:</label>
+                <input type="text" class="form-control" [(ngModel)]="field.fieldValueDefault">
+              </div>
+              <div *ngIf="field.fieldType == 0 || field.fieldType == 4" class="form-group">
+                <label>
+                  <font style="vertical-align: inherit;">
+                    <font style="vertical-align: inherit;">Hint:</font>
+                  </font>
+                </label>
+                <textarea class="form-control" rows="2" [(ngModel)]="field.hint" placeholder="Enter ..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>
+                  <font style="vertical-align: inherit;">
+                    <font style="vertical-align: inherit;">Descrição:</font>
+                  </font>
+                </label>
+                <textarea class="form-control" rows="3" [(ngModel)]="field.fieldDescription" placeholder="Enter ..."></textarea>
+              </div>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="resetField()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="save()" data-dismiss="modal">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>

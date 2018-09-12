@@ -1,0 +1,113 @@
+<div class="col-md-12">
+  <div style=" width:100%;
+                      height:450px;
+                      overflow:auto;">
+    <table class="table table-striped ">
+      <thead>
+        <tr class="thead">
+          <th>Nome</th>
+          <th>Login</th>
+          <th>Fone</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{user.nome}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.fone}}</td>
+            <td>
+              <a (click)="edit(user)" class="ignore-tab" data-toggle="modal" data-target="#modaluser">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </a>
+            </td>
+            <td>
+              <a (click)="remove(user)" class="ignore-tab">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      <tbody *ngIf="users.length < 1">
+        <tr>
+          <td colspan="5">Nada Adicionado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-primary" data-toggle="modal" data-target="#modaluser"> Adicionar </button>
+
+  <div class="modal modaluser" id="modaluser" tabindex="-1" role="dialog" aria-labelledby="modaluser" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modaluserTitle">Adicionar User</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label>Tipo Serviço:</label>
+                <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="user.type" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  <option value="null">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">Selecione um Tipo..</font>
+                    </font>
+                  </option>
+                  <option *ngFor="let type of userType" [value]="type.id">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">{{type.name}}</font>
+                    </font>
+                  </option>
+                </select>
+              </div>
+              <form [formGroup]="formName">
+                <div class="form-group" [class.has-error]="formName.controls['nome'].touched && !formName.controls['nome'].valid">
+                  <label for="name">Nome:</label>
+                  <input type="text" class="form-control"  [(ngModel)]="user.nome" formControlName="nome">
+                  <p style="color:red" *ngIf="formName.controls['nome'].touched && !formName.controls['nome'].valid">O campo é obrigatório!</p>
+                </div>
+                <div class="form-group" [class.has-error]="formName.controls['fone'].touched && !formName.controls['fone'].valid">
+                  <label for="name">Fone:</label>
+                  <input type="text" class="form-control" [(ngModel)]="user.fone" formControlName="fone">
+                  <p style="color:red" *ngIf="formName.controls['fone'].touched && !formName.controls['fone'].valid">O campo é obrigatório!</p>
+                </div>
+                <div class="form-group" [class.has-error]="formName.controls['email'].touched && !formName.controls['email'].valid">
+                  <label for="name">E-mail:</label>
+                  <input type="email" class="form-control"  [(ngModel)]="user.email" formControlName="email">
+                  <p style="color:red" *ngIf="formName.controls['email'].touched && !formName.controls['email'].valid">O campo é obrigatório!, e deve ter o formato aaa@aaa.com</p>
+                </div>
+                <div class="form-group" [class.has-error]="formName.controls['senha'].touched && !formName.controls['senha'].valid">
+                  <label for="name">Senha:</label>
+                  <input type="text" class="form-control"  [(ngModel)]="user.senha" formControlName="senha">
+                  <p style="color:red" *ngIf="formName.controls['senha'].touched && !formName.controls['senha'].valid">O campo é obrigatório!</p>
+                </div>
+              </form>
+              <div class="row">
+                  <div class="col-md-7">
+                    <div class="form-group">
+                      <label>Administrador?</label>
+                      <div class="radio">
+                        <span class="input-group-addon">
+                          <input type="radio" id="true" [checked]="user.administrator === 1"name="price" (click)="isAdmin(1)">
+                          <label class="text-center" for="true">Sim</label>
+                          <input type="radio" id="false" [checked]="user.administrator === 0" name="price" (click)="isAdmin(0)">
+                          <label class="text-center" for="false">Não</label>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="save()" data-dismiss="modal">Salvar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- {{user | json}} -->

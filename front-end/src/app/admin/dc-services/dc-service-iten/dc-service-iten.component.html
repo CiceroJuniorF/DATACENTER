@@ -1,0 +1,139 @@
+<div class="col-md-12">
+  <div style=" width:100%;
+                  height:450px;
+                  overflow:auto;">
+    <table class="table table-striped ">
+      <thead>
+        <tr class="thead">
+          <th>Nome</th>
+          <th>Status</th>
+          <th>Tipo</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let iten of serviceItens">
+          <td>{{iten.name}}</td>
+          <td>{{iten.status | statusPipe}}</td>
+          <td>{{iten.type | serviceType:serviceItenTypes}}</td>
+          <td>
+            <a (click)="edit(iten)" class="ignore-tab" data-toggle="modal" data-target="#modalServiceIten">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a>
+          </td>
+          <td>
+            <a (click)="remove(iten)" class="ignore-tab">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="serviceItens.length < 1">
+        <tr>
+          <td colspan="5">Nada Adicionado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-primary" data-toggle="modal" data-target="#modalServiceIten"> Adicionar </button>
+
+  <div class="modal" id="modalServiceIten" tabindex="-1" role="dialog" aria-labelledby="modalServiceIten" aria-hidden="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalServiceItenTitle">Adicionar Service</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="resetServiceIten()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+
+              <form [formGroup]="formName">
+                <div class="form-group" [class.has-error]="formName.controls['name'].touched && !formName.controls['name'].valid">
+                  <label>Nome:</label>
+                  <input type="text" class="form-control" [(ngModel)]="serviceIten.name" maxlength="30" formControlName="name">
+                  <p style="color:red" *ngIf="formName.controls['name'].touched && !formName.controls['name'].valid">O campo é obrigatório!</p>
+                </div>
+              </form>
+              <div class="form-group">
+                <label for="name">Descrição da label:</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="serviceIten.labelForDescription">
+              </div>
+
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="form-group">
+                    <label>Status:</label>
+                    <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="serviceIten.status" style="width: 100%;" tabindex="-1"
+                      aria-hidden="true">
+                      <option selected="selected" value="2">
+                        <font style="vertical-align: inherit;">
+                          <font style="vertical-align: inherit;">Ativado</font>
+                        </font>
+                      </option>
+                      <option value="1">
+                        <font style="vertical-align: inherit;" >
+                          <font style="vertical-align: inherit;">Desativado</font>
+                        </font>
+                      </option>
+                      <option value="0">
+                        <font style="vertical-align: inherit;" >
+                          <font style="vertical-align: inherit;">Excluido</font>
+                        </font>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label>Preço:</label>
+                    <input type="number" class="form-control" [(ngModel)]="serviceIten.price">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Tipo Serviço:</label>
+                <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="serviceIten.type" style="width: 100%;" tabindex="-1"
+                  aria-hidden="true">
+                  <option value="null">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">Selecione um Tipo..</font>
+                    </font>
+                  </option>
+                  <option *ngFor="let type of serviceItenTypes" [value]="type.id">
+                    <font style="vertical-align: inherit;">
+                      <font style="vertical-align: inherit;">{{type.name}}</font>
+                    </font>
+                  </option>                              
+                </select>
+                <a data-toggle="modal" data-target="#typeModal" style="background-color:white" title="Novo tipo de serviço.">
+                    <i class="fa fa-plus" aria-hidden="true" style="background-color:white"></i>
+                </a>
+
+              </div>
+              <div class="form-group">
+                <label>
+                  <font style="vertical-align: inherit;">
+                    <font style="vertical-align: inherit;">Descrição:</font>
+                  </font>
+                </label>
+                <textarea class="form-control" rows="3" [(ngModel)]="serviceIten.description" placeholder="Enter ..."></textarea>
+              </div>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="resetServiceIten()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="save()" data-dismiss="modal">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-dc-service-iten-type (saveType)='alterType($event)'></app-dc-service-iten-type>
+  <!--{{serviceIten | json}}-->
